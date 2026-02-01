@@ -139,7 +139,7 @@ export default function PublicNavbar() {
       </header>
 
       {/* Spacer for fixed header */}
-      <div className="h-[120px]" />
+     
     </>
   );
 }

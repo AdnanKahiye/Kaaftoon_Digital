@@ -8,17 +8,13 @@ export default function PublicLayout({
 }) {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Fixed Navbar */}
       <PublicNavbar />
 
-      {/* Page Content */}
-      <main className="flex-1 pt-[112px]">
-        <div className="mx-auto max-w-7xl px-6">
-          {children}
-        </div>
+      {/* Offset for fixed navbar (TOP BAR + NAV BAR) */}
+      <main className="flex-1 pt-[104px]">
+        {children}
       </main>
 
-      {/* Footer */}
       <PublicFooter />
     </div>
   );
