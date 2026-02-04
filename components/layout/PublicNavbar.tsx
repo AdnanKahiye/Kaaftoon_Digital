@@ -1,28 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Phone, Mail } from "lucide-react";
 
 export default function PublicNavbar() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const servicesRef = useRef<HTMLDivElement>(null);
-
-  // Xir menu-ga marka meel kale la gujiyo
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        servicesRef.current &&
-        !servicesRef.current.contains(event.target as Node)
-      ) {
-        setServicesOpen(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const closeTimeout = useRef<NodeJS.Timeout | null>(null);
 
   return (
     <>
@@ -31,16 +16,16 @@ export default function PublicNavbar() {
         <div className="mx-auto max-w-7xl px-6 py-2 flex justify-between items-center">
           <div className="hidden md:flex items-center gap-6">
             <a
-              href="mailto:info@kaaftoon.com"
-              className="flex items-center gap-2 hover:text-orange-400"
+              href="mailto:info@maansoft.com"
+              className="flex items-center gap-2 hover:text-orange-400 transition"
             >
               <Mail className="h-4 w-4 text-orange-500" />
-              info@kaaftoon.com
+              info@maansoft.com
             </a>
 
             <a
               href="tel:+252610000000"
-              className="flex items-center gap-2 hover:text-orange-400"
+              className="flex items-center gap-2 hover:text-orange-400 transition"
             >
               <Phone className="h-4 w-4 text-orange-500" />
               +252 61 xxx xxxx
@@ -49,7 +34,7 @@ export default function PublicNavbar() {
 
           <Link
             href="/contact"
-            className="rounded-full bg-orange-500 px-4 py-1.5 text-white font-semibold hover:bg-orange-600"
+            className="rounded-full bg-orange-500 px-4 py-1.5 text-white font-semibold hover:bg-orange-600 transition"
           >
             Get Started
           </Link>
@@ -62,54 +47,79 @@ export default function PublicNavbar() {
 
           {/* Logo */}
           <Link href="/" className="text-3xl font-extrabold text-gray-900">
-            Kaaftoon<span className="text-orange-500">Digital</span>
+            Maan<span className="text-orange-500">Soft</span>
           </Link>
 
           {/* ================= DESKTOP NAV ================= */}
           <nav className="hidden lg:flex items-center gap-8 bg-white rounded-full px-10 py-3 shadow-sm">
 
-            <Link href="/" className="font-medium hover:text-orange-500">
+            <Link href="/" className="font-medium hover:text-orange-500 transition">
               Home
             </Link>
 
-            {/* ===== SERVICES (CLICK BASED – XASILOON) ===== */}
-            <div className="relative" ref={servicesRef}>
+            {/* ===== SERVICES (HOVER + CLICK SAFE) ===== */}
+            <div
+              className="relative"
+              onMouseEnter={() => {
+                if (closeTimeout.current) clearTimeout(closeTimeout.current);
+                setServicesOpen(true);
+              }}
+              onMouseLeave={() => {
+                closeTimeout.current = setTimeout(() => {
+                  setServicesOpen(false);
+                }, 200);
+              }}
+            >
               <button
-                onClick={() => setServicesOpen((prev) => !prev)}
-                className="font-medium hover:text-orange-500"
+                type="button"
+                onClick={() => setServicesOpen((p) => !p)}
+                className="font-medium hover:text-orange-500 transition"
               >
                 Services ▾
               </button>
 
-              {servicesOpen && (
-                <div className="absolute left-1/2 top-full mt-5 -translate-x-1/2 z-50">
-                  <MegaMenu closeMenu={() => setServicesOpen(false)} />
-                </div>
-              )}
+              <div
+                className={`absolute left-1/2 top-full mt-5 -translate-x-1/2 z-50
+                transition-all duration-200 ease-out
+                ${servicesOpen
+                  ? "opacity-100 translate-y-0 pointer-events-auto"
+                  : "opacity-0 -translate-y-2 pointer-events-none"
+                }`}
+                onMouseEnter={() => {
+                  if (closeTimeout.current) clearTimeout(closeTimeout.current);
+                }}
+                onMouseLeave={() => {
+                  closeTimeout.current = setTimeout(() => {
+                    setServicesOpen(false);
+                  }, 200);
+                }}
+              >
+                <MegaMenu closeMenu={() => setServicesOpen(false)} />
+              </div>
             </div>
 
-            <Link href="/products" className="font-medium hover:text-orange-500">
-              Products
+            <Link href="/freelancer" className="font-medium hover:text-orange-500 transition">
+              Freelancer
             </Link>
 
-            <Link href="/resources" className="font-medium hover:text-orange-500">
-              Clients
+            <Link href="/articles" className="font-medium hover:text-orange-500 transition">
+              Articles
             </Link>
 
-            <Link href="/events" className="font-medium hover:text-orange-500">
-              Events
+            <Link href="/packages" className="font-medium hover:text-orange-500 transition">
+              Packages
             </Link>
           </nav>
 
           {/* Login */}
           <Link
             href="/auth/login"
-            className="hidden lg:inline-flex rounded-full bg-orange-500 px-6 py-3 text-white font-semibold hover:bg-orange-600"
+            className="hidden lg:inline-flex rounded-full bg-orange-500 px-6 py-3 text-white font-semibold hover:bg-orange-600 transition"
           >
             Login
           </Link>
 
-          {/* Mobile Button */}
+          {/* Mobile */}
           <button
             className="lg:hidden text-2xl"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -124,9 +134,9 @@ export default function PublicNavbar() {
             <nav className="flex flex-col gap-4 font-medium">
               <Link href="/">Home</Link>
               <Link href="/services">Services</Link>
-              <Link href="/products">Products</Link>
-              <Link href="/resources">Resources</Link>
-              <Link href="/contact">Contact</Link>
+              <Link href="/freelancer">Freelancer</Link>
+              <Link href="/articles">Articles</Link>
+              <Link href="/packages">Packages</Link>
               <Link
                 href="/auth/login"
                 className="mt-4 rounded-full bg-orange-500 py-3 text-center text-white"
@@ -137,9 +147,6 @@ export default function PublicNavbar() {
           </div>
         )}
       </header>
-
-      {/* Spacer for fixed header */}
-     
     </>
   );
 }
@@ -149,34 +156,32 @@ export default function PublicNavbar() {
 function MegaMenu({ closeMenu }: { closeMenu: () => void }) {
   return (
     <div className="w-[900px] bg-white rounded-2xl shadow-xl p-10 grid grid-cols-3 gap-12">
-
       <MenuColumn
-        title="Software Solutions"
+        title="Software Services"
         links={[
-          ["Web Development", "/services/web"],
-          ["Custom Software", "/services/custom"],
-          ["Mobile Apps", "/services/mobile"],
-          ["ERP Solutions", "/services/erp"],
+          ["Business Website", "/services/web"],
+          ["Personal Website", "/services/personal"],
+          ["Business Application", "/services/erp"],
         ]}
         closeMenu={closeMenu}
       />
-
       <MenuColumn
         title="Creative Services"
         links={[
-          ["Branding", "/services/branding"],
+          ["Business Branding", "/services/branding"],
           ["Digital Marketing", "/services/marketing"],
-          ["Video Editing", "/services/video"],
+          ["Social Media Management", "/services/social-media"],
+          ["Content Creation", "/services/content-creation"],
         ]}
         closeMenu={closeMenu}
       />
-
       <MenuColumn
-        title="Consultancy"
+        title="Coaching Services"
         links={[
-          ["IT Consulting", "/services/it-consulting"],
-          ["Digital Strategy", "/services/digital-strategy"],
-          ["Business Automation", "/services/automation"],
+          ["Backend Development & APIs", "/services/web-development-coaching"],
+          ["Relational Databases & SQL", "/services/relational-databases-sql-coaching"],
+          ["Software Architecture Design", "/services/software-architecture-coaching"],
+          ["DevOps & Containerization", "/services/devops-docker"],
         ]}
         closeMenu={closeMenu}
       />
@@ -196,13 +201,14 @@ function MenuColumn({
   return (
     <div>
       <h4 className="font-bold text-lg mb-4 text-gray-900">{title}</h4>
-      <ul className="space-y-3 text-gray-600">
+      <ul className="space-y-3">
         {links.map(([label, href]) => (
           <li key={label}>
             <Link
               href={href}
               onClick={closeMenu}
-              className="hover:text-orange-500 transition"
+              className="block rounded-lg px-3 py-2 text-gray-600
+                         hover:bg-orange-50 hover:text-orange-500 transition"
             >
               {label}
             </Link>
