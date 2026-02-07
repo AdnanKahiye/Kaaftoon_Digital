@@ -41,25 +41,28 @@ const stats = [
 
 export default function WhyChooseUsSection() {
   return (
-    <section className="bg-gray-50">
+    <section className="">
 
-      {/* ================= MAIN CONTENT (CENTERED) ================= */}
-      <div className="mx-auto max-w-6xl px-4 py-12">
+      {/* ================= MAIN CONTENT ================= */}
+      <div className="mx-auto max-w-6xl px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
           {/* LEFT SIDE */}
           <div>
-            <span className="inline-block mb-3 rounded-full bg-orange-50 px-4 py-1
-                             text-xs font-semibold text-orange-600 uppercase">
+            <span
+              className="inline-block mb-3 rounded-full
+              bg-white px-4 py-1 text-xs font-semibold
+              text-[#D51116] uppercase"
+            >
               Why Choose Us
             </span>
 
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#D51116] leading-tight">
               Here is why we are <br className="hidden sm:block" />
               different from others
             </h2>
 
-            <p className="mt-4 max-w-xl text-gray-600">
+            <p className="mt-4 max-w-xl text-gray-700">
               We focus on building long-term client relationships through
               customized, scalable solutions and continuous innovation.
             </p>
@@ -72,16 +75,16 @@ export default function WhyChooseUsSection() {
                   <div key={reason.title} className="flex items-start gap-4">
                     <div
                       className="flex h-11 w-11 shrink-0 items-center justify-center
-                                 rounded-lg bg-orange-100 text-orange-600"
+                      rounded-lg bg-white text-[#F39220] shadow"
                     >
                       <Icon className="h-5 w-5" />
                     </div>
 
                     <div>
-                      <h3 className="font-bold text-gray-900">
+                      <h3 className="font-bold text-[#D51116]">
                         {reason.title}
                       </h3>
-                      <p className="mt-1 text-sm text-gray-600">
+                      <p className="mt-1 text-sm text-gray-700">
                         {reason.description}
                       </p>
                     </div>
@@ -95,26 +98,28 @@ export default function WhyChooseUsSection() {
           <div className="relative">
             <div
               className="h-[320px] w-full rounded-2xl
-                         bg-gradient-to-br from-orange-200 to-orange-100
-                         shadow-lg"
+              bg-gradient-to-br from-[#F39220]/30 to-white
+              shadow-lg"
             />
-            <div className="absolute -top-6 -right-6 h-20 w-20
-                            rounded-full border border-dashed
-                            border-orange-300 opacity-40" />
+            <div
+              className="absolute -top-6 -right-6 h-20 w-20
+              rounded-full border border-dashed
+              border-[#D51116]/30 opacity-40"
+            />
           </div>
         </div>
       </div>
 
-      {/* ================= STATS BAR (FULL WIDTH 100%) ================= */}
-      <div className="bg-gray-900">
+      {/* ================= STATS BAR ================= */}
+      <div className="bg-[#D51116]">
         <div className="mx-auto max-w-6xl px-6 py-10">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
             {stats.map((stat) => (
               <div key={stat.label}>
-                <div className="text-2xl md:text-3xl font-extrabold text-orange-400">
+                <div className="text-2xl md:text-3xl font-extrabold text-[#FFECCD]">
                   {stat.value}
                 </div>
-                <div className="mt-1 text-sm text-gray-300">
+                <div className="mt-1 text-sm text-[#FFECCD]/80">
                   {stat.label}
                 </div>
               </div>

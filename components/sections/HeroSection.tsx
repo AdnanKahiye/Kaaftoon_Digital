@@ -44,7 +44,7 @@ export default function HeroSection() {
         >
           <Image
             src={bg}
-            alt="MaanSoft Hero Background"
+            alt="Kafton Digital Hero Background"
             fill
             priority={index === 0}
             className="object-cover"
@@ -52,45 +52,50 @@ export default function HeroSection() {
         </div>
       ))}
 
-      {/* ================= DARK OVERLAY ================= */}
-      <div className="absolute inset-0 bg-black/65" />
+      {/* ================= OVERLAY ================= */}
+      <div className="absolute inset-0 bg-[#D51116]/60 mix-blend-multiply" />
 
       {/* ================= NAVIGATION ARROWS ================= */}
-  <button
-  onClick={prevBg}
-  className="hidden md:flex absolute left-6 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur hover:bg-orange-500 transition"
-  aria-label="Previous slide"
->
-  <ChevronLeft size={26} />
-</button>
+      <button
+        onClick={prevBg}
+        className="hidden md:flex absolute left-6 top-1/2 z-20 -translate-y-1/2
+        rounded-full bg-white/10 p-3 text-white backdrop-blur
+        hover:bg-[#F39220] transition"
+        aria-label="Previous slide"
+      >
+        <ChevronLeft size={26} />
+      </button>
 
-
-<button
-  onClick={nextBg}
-  className="hidden md:flex absolute right-6 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur hover:bg-orange-500 transition"
-  aria-label="Next slide"
->
-  <ChevronRight size={26} />
-</button>
-
+      <button
+        onClick={nextBg}
+        className="hidden md:flex absolute right-6 top-1/2 z-20 -translate-y-1/2
+        rounded-full bg-white/10 p-3 text-white backdrop-blur
+        hover:bg-[#F39220] transition"
+        aria-label="Next slide"
+      >
+        <ChevronRight size={26} />
+      </button>
 
       {/* ================= CONTENT ================= */}
       <div className="relative z-10 flex h-full items-center">
         <div className="mx-auto max-w-6xl px-6 text-center lg:text-left">
 
           {/* Badge */}
-          <span className="inline-block mb-6 rounded-full border border-orange-500/40 bg-orange-500/10 px-6 py-1.5 text-xs font-semibold text-orange-400 uppercase tracking-wide">
+          <span className="inline-block mb-6 rounded-full
+            border border-[#F39220]/60 bg-[#FFECCD]/20
+            px-6 py-1.5 text-xs font-semibold
+            text-[#FFECCD] uppercase tracking-wide">
             All-in-one Digital Partner
           </span>
 
           {/* Title */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] max-w-3xl text-white">
             Let’s Elevate Your <br />
-            <span className="text-orange-500">Digital Growth</span>
+            <span className="text-[#D51116]">Digital Growth</span>
           </h1>
 
           {/* Description */}
-          <p className="mt-6 max-w-2xl text-gray-200 text-lg">
+          <p className="mt-6 max-w-2xl text-[#FFECCD] text-lg">
             We design and build software, digital platforms, and business systems
             that help organizations operate smarter, scale faster, and succeed
             in a competitive digital landscape.
@@ -100,14 +105,18 @@ export default function HeroSection() {
           <div className="mt-10 flex flex-wrap gap-5 justify-center lg:justify-start">
             <Link
               href="/services"
-              className="rounded-full bg-orange-500 px-9 py-3 font-semibold text-white hover:bg-orange-600 transition"
+              className="rounded-full bg-[#D51116] px-9 py-3
+              font-semibold text-white
+              hover:bg-[#F39220] transition"
             >
               Our Services
             </Link>
 
             <Link
               href="/contact"
-              className="rounded-full border border-white/40 px-9 py-3 font-semibold text-white hover:bg-white/10 transition"
+              className="rounded-full border border-[#FFECCD]/60
+              px-9 py-3 font-semibold text-[#FFECCD]
+              hover:bg-[#FFECCD]/10 transition"
             >
               Get Started
             </Link>

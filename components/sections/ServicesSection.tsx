@@ -54,11 +54,7 @@ const PACKAGES: Record<Tab, any[]> = {
       name: "Starter",
       price: "$199",
       badge: "",
-      features: [
-        "Logo Design",
-        "Brand Colors",
-        "Social Media Kit",
-      ],
+      features: ["Logo Design", "Brand Colors", "Social Media Kit"],
       cta: "/contact",
     },
     {
@@ -128,16 +124,16 @@ export default function ServicesPackagesSection() {
   const [tab, setTab] = useState<Tab>("Software");
 
   return (
-    <section className="py-16 md:py-20 bg-gray-50">
+    <section className="py-16 md:py-20 bg-[#FFECCD]">
       <div className="mx-auto max-w-6xl px-6">
 
         {/* HEADER */}
         <div className="text-center max-w-3xl mx-auto">
-          <span className="inline-block mb-3 rounded-full bg-orange-500/10 px-4 py-1 text-xs font-semibold text-orange-500 uppercase tracking-wide">
+          <span className="inline-block mb-3 rounded-full bg-[#F39220]/20 px-4 py-1 text-xs font-semibold text-[#D51116] uppercase tracking-wide">
             Our price plan for every business size
           </span>
 
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#D51116]">
             Choose Our Plan
           </h2>
         </div>
@@ -151,8 +147,8 @@ export default function ServicesPackagesSection() {
               className={`rounded-full px-6 py-2 text-sm font-semibold transition-all duration-300
                 ${
                   tab === t
-                    ? "bg-orange-500 text-white shadow-md"
-                    : "bg-white border border-orange-200 text-orange-600 hover:bg-orange-50"
+                    ? "bg-[#D51116] text-white shadow-md"
+                    : "bg-white border border-[#F39220] text-[#D51116] hover:bg-[#FFECCD]"
                 }`}
             >
               {t} Packages
@@ -170,20 +166,20 @@ export default function ServicesPackagesSection() {
                 hover:-translate-y-2 hover:shadow-2xl
                 ${
                   pkg.highlight
-                    ? "border-orange-500 shadow-xl scale-[1.02]"
-                    : "border-gray-200 shadow-md hover:border-orange-400"
+                    ? "border-[#D51116] shadow-xl scale-[1.03]"
+                    : "border-[#F39220]/40 shadow-md hover:border-[#D51116]"
                 }`}
             >
               {/* BADGE */}
               {pkg.badge && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-orange-500 px-4 py-1 text-xs font-bold text-white">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#F39220] px-4 py-1 text-xs font-bold text-white">
                   {pkg.badge}
                 </span>
               )}
 
               {/* CARD HEADER */}
               <div className="text-center">
-                <h3 className="text-xl font-bold text-gray-900">
+                <h3 className="text-xl font-bold text-[#D51116]">
                   {pkg.name}
                 </h3>
 
@@ -197,13 +193,13 @@ export default function ServicesPackagesSection() {
               </div>
 
               {/* DIVIDER */}
-              <div className="my-6 h-px bg-gray-200" />
+              <div className="my-6 h-px bg-[#F39220]/30" />
 
               {/* FEATURES */}
-              <ul className="flex-1 space-y-4 text-sm text-gray-600">
+              <ul className="flex-1 space-y-4 text-sm text-gray-700">
                 {pkg.features.map((f: string) => (
                   <li key={f} className="flex items-start gap-3">
-                    <Check className="mt-0.5 h-4 w-4 text-orange-500 shrink-0" />
+                    <Check className="mt-0.5 h-4 w-4 text-[#F39220] shrink-0" />
                     <span>{f}</span>
                   </li>
                 ))}
@@ -217,8 +213,8 @@ export default function ServicesPackagesSection() {
                   transition-all duration-300 group-hover:scale-105
                   ${
                     pkg.highlight
-                      ? "bg-orange-500 text-white hover:bg-orange-600"
-                      : "bg-gray-900 text-white hover:bg-gray-800"
+                      ? "bg-[#D51116] text-white hover:bg-[#F39220]"
+                      : "bg-gray-900 text-white hover:bg-[#D51116]"
                   }`}
               >
                 Get Started

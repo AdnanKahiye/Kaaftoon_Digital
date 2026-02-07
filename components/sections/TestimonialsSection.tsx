@@ -26,20 +26,24 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section className="py-12 bg-white">
+    <section className="py-16">
       <div className="mx-auto max-w-6xl px-4">
 
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto">
-          <span className="inline-block mb-3 rounded-full bg-orange-50 px-4 py-1 text-xs font-semibold text-orange-600 uppercase">
+          <span
+            className="inline-block mb-3 rounded-full
+            bg-white px-4 py-1 text-xs font-semibold
+            text-[#D51116] uppercase"
+          >
             Testimonials
           </span>
 
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#D51116]">
             What Our Clients Say
           </h2>
 
-          <p className="mt-4 text-gray-600">
+          <p className="mt-4 text-gray-700">
             Trusted by businesses and entrepreneurs who value quality,
             performance, and results.
           </p>
@@ -50,14 +54,19 @@ export default function TestimonialsSection() {
           {testimonials.map((item) => (
             <div
               key={item.name}
-              className="rounded-xl border border-gray-100 bg-gray-50 p-6 shadow-sm hover:shadow-md transition"
+              className="rounded-2xl bg-white p-6 shadow
+              border border-[#F39220]/30
+              hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
             >
               <p className="text-gray-700 text-sm leading-relaxed">
                 “{item.message}”
               </p>
 
               <div className="mt-6 flex items-center gap-4">
-                <div className="relative h-12 w-12 overflow-hidden rounded-full bg-gray-200">
+                <div
+                  className="relative h-12 w-12 overflow-hidden rounded-full
+                  border-2 border-[#F39220]"
+                >
                   <Image
                     src={item.avatar}
                     alt={item.name}
@@ -67,10 +76,10 @@ export default function TestimonialsSection() {
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-gray-900">
+                  <h4 className="font-semibold text-[#D51116]">
                     {item.name}
                   </h4>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-gray-600">
                     {item.role}
                   </span>
                 </div>

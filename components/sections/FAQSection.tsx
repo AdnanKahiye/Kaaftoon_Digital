@@ -35,23 +35,27 @@ export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-[#FFECCD]">
       <div className="mx-auto max-w-6xl px-6">
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
           {/* LEFT CONTENT */}
           <div>
-            <span className="inline-block mb-4 rounded-full bg-orange-500/10 px-5 py-1 text-xs font-semibold text-orange-500 uppercase tracking-wide">
-              FAQ’S
+            <span
+              className="inline-block mb-4 rounded-full
+              bg-white px-5 py-1 text-xs font-semibold
+              text-[#D51116] uppercase tracking-wide"
+            >
+              FAQ’s
             </span>
 
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#D51116] leading-tight">
               Frequently Asked <br className="hidden sm:block" />
               Questions
             </h2>
 
-            <p className="mt-4 max-w-md text-gray-600">
+            <p className="mt-4 max-w-md text-gray-700">
               Find clear answers to the most common questions about our services,
               process, and how we help businesses succeed.
             </p>
@@ -65,7 +69,9 @@ export default function FAQSection() {
               return (
                 <div
                   key={faq.question}
-                  className="rounded-2xl border border-gray-200 bg-white transition hover:shadow-sm"
+                  className="rounded-2xl bg-white
+                  border border-[#F39220]/30
+                  transition hover:shadow-md"
                 >
                   <button
                     onClick={() =>
@@ -73,11 +79,19 @@ export default function FAQSection() {
                     }
                     className="flex w-full items-center justify-between px-6 py-5 text-left"
                   >
-                    <span className="font-semibold text-gray-900">
+                    <span className="font-semibold text-[#D51116]">
                       {faq.question}
                     </span>
 
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-700">
+                    <span
+                      className={`flex h-8 w-8 items-center justify-center
+                      rounded-full border
+                      ${
+                        isOpen
+                          ? "bg-[#D51116] border-[#D51116] text-white"
+                          : "border-[#F39220] text-[#D51116]"
+                      }`}
+                    >
                       {isOpen ? (
                         <Minus className="h-4 w-4" />
                       ) : (
@@ -87,11 +101,10 @@ export default function FAQSection() {
                   </button>
 
                   <div
-                    className={`px-6 overflow-hidden transition-all duration-300 ${
-                      isOpen ? "max-h-40 pb-6" : "max-h-0"
-                    }`}
+                    className={`px-6 overflow-hidden transition-all duration-300
+                    ${isOpen ? "max-h-40 pb-6" : "max-h-0"}`}
                   >
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-700">
                       {faq.answer}
                     </p>
                   </div>
