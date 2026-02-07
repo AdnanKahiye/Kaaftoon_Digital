@@ -23,9 +23,9 @@ export default function PublicNavbar() {
       <div className="fixed top-0 left-0 right-0 z-50 bg-gray-900 text-gray-200 text-sm">
         <div className="mx-auto max-w-7xl px-6 py-2 grid grid-cols-3 items-center">
           <div className="hidden md:flex items-center gap-6">
-            <a href="mailto:info@maansoft.com" className="flex items-center gap-2 hover:text-orange-400 transition">
+            <a href="mailto:info@kaftondigital.com" className="flex items-center gap-2 hover:text-orange-400 transition">
               <Mail className="h-4 w-4 text-orange-500" />
-              info@maansoft.com
+              info@kaftondigital.com
             </a>
             <a href="tel:+252610000000" className="flex items-center gap-2 hover:text-orange-400 transition">
               <Phone className="h-4 w-4 text-orange-500" />
@@ -64,7 +64,7 @@ export default function PublicNavbar() {
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
           {/* LOGO = HOME */}
           <Link href="/" className="text-3xl font-extrabold text-gray-900">
-            Maan<span className="text-orange-500">Soft</span>
+            Kafton<span className="text-orange-500">Digital</span>
           </Link>
 
           {/* ================= DESKTOP NAV ================= */}

@@ -11,7 +11,7 @@ export default function PublicFooter() {
           {/* Brand */}
           <div className="md:col-span-2">
             <h3 className="text-2xl font-extrabold text-white">
-              Maan<span className="text-orange-500">Soft</span>
+              kafton<span className="text-orange-500">Digital</span>
             </h3>
 
             <p className="mt-4 max-w-md text-sm text-gray-400 leading-relaxed">
@@ -53,7 +53,7 @@ export default function PublicFooter() {
             <ul className="mt-4 space-y-3 text-sm text-gray-400">
               <li>
                 <span className="text-white font-medium">Email:</span>{" "}
-                info@maansoft.com
+                info@kaftondigital.com
               </li>
               <li>
                 <span className="text-white font-medium">Phone:</span>{" "}
