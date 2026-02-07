@@ -7,17 +7,22 @@ import CTASection from "@/components/sections/CTASection";
 import FAQSection from "@/components/sections/FAQSection";
 import ContactSection from "@/components/sections/ContactSection";
 
-
 export default function HomePage() {
   return (
     <main>
+      {/* HERO */}
       <HeroSection />
+
+      {/* WHITE SPACE SEPARATOR */}
+      <section className="h-12 md:h-12 bg-white"></section>
+
+      {/* SERVICES */}
       <ServicesSection />
-      <PortfolioSection />
+
+      {/* OTHER SECTIONS */}
       <WhyChooseUsSection />
       <TestimonialsSection />
-      <CTASection />
-       <FAQSection />
+      <FAQSection />
       <ContactSection />
     </main>
   );
