@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Check } from "lucide-react";
 
-const TABS = ["Software", "Creative", "Marketing"] as const;
+const TABS = ["Marketing", "Creative", "Software"] as const; // Reordered tabs
 type Tab = typeof TABS[number];
 
 const PACKAGES: Record<Tab, any[]> = {
@@ -22,7 +22,7 @@ const PACKAGES: Record<Tab, any[]> = {
       cta: "/contact",
     },
     {
-      name: "Pro",
+      name: "Special",
       price: "$599",
       badge: "POPULAR",
       highlight: true,
@@ -36,7 +36,7 @@ const PACKAGES: Record<Tab, any[]> = {
       cta: "/contact",
     },
     {
-      name: "Premium",
+      name: "Advanced",
       price: "$999",
       badge: "",
       features: [
@@ -52,32 +52,35 @@ const PACKAGES: Record<Tab, any[]> = {
   Creative: [
     {
       name: "Starter",
-      price: "$199",
+      price: "$99.99",
       badge: "",
-      features: ["Logo Design", "Brand Colors", "Social Media Kit"],
+      features: ["4 Post Design", "4 Videos", "Normal Logo", "Facebook Management", "Idea Creation"],
       cta: "/contact",
     },
     {
-      name: "Brand Pro",
-      price: "$399",
+      name: "Special Package",
+      price: "$299.99",
       badge: "POPULAR",
       highlight: true,
       features: [
-        "Full Brand Identity",
-        "Logo and Guidelines",
-        "Marketing Materials",
-        "Unlimited Revisions",
+        "12 Post Design",
+        "Daily Videos",
+        "Video Animation",
+        "Manage Platforms",
+        "Daily Support",
       ],
       cta: "/contact",
     },
     {
-      name: "Ultimate",
-      price: "$699",
+      name: "Advanced Package",
+      price: "$199.99",
       badge: "",
       features: [
-        "Brand and Website UI",
-        "Design System",
-        "Social Media Templates",
+        "8 Post Design",
+        "8 Videos",
+        "Logo Animation",
+        "TikTok + FB Management",
+        "Idea Creation",
       ],
       cta: "/contact",
     },
@@ -121,18 +124,16 @@ const PACKAGES: Record<Tab, any[]> = {
 };
 
 export default function ServicesPackagesSection() {
-  const [tab, setTab] = useState<Tab>("Software");
+  const [tab, setTab] = useState<Tab>("Marketing"); // Default tab is "Marketing"
 
   return (
     <section className="py-16 md:py-20 bg-[#FFECCD]">
       <div className="mx-auto max-w-6xl px-6">
-
         {/* HEADER */}
         <div className="text-center max-w-3xl mx-auto">
           <span className="inline-block mb-3 rounded-full bg-[#F39220]/20 px-4 py-1 text-xs font-semibold text-[#D51116] uppercase tracking-wide">
             Our price plan for every business size
           </span>
-
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#D51116]">
             Choose Our Plan
           </h2>
@@ -187,9 +188,7 @@ export default function ServicesPackagesSection() {
                   {pkg.price}
                 </div>
 
-                <p className="mt-1 text-sm text-gray-500">
-                  One time package
-                </p>
+                <p className="mt-1 text-sm text-gray-500">package per month</p>
               </div>
 
               {/* DIVIDER */}
