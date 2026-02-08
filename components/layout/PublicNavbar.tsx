@@ -180,9 +180,9 @@ function MegaMenu({ closeMenu }: { closeMenu: () => void }) {
       <MenuColumn
         title="Consultancy Services"
         links={[
-          ["Social Media Consulting", "/services/consultancy/social-media"],
-          ["Systems Consulting", "/services/consultancy/business-systems"],
-          ["Startup Business Consulting", "/services/consultancy/startup"],
+          ["Social Media Consulting", "/services/Consultancy/Media-Consulting"],
+          ["Systems Consulting", "/services/Consultancy/Systems-Consulting"],
+          ["Startup Business Consulting", "/services/Consultancy/startup-business"],
         ]}
         closeMenu={closeMenu}
       />

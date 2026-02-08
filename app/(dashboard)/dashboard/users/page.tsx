@@ -1,3 +1,9 @@
+import UserTable from "@/components/Users/UserTable";
+
 export default function UsersPage() {
-  return <h1 className="text-xl font-semibold">Users</h1>;
+  return (
+    <div className="4-6">
+      <UserTable />
+    </div>
+  );
 }

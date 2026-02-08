@@ -3,23 +3,18 @@ import ServicesSection from "./ServicesSection";
 
 export default function ServicesOverview() {
   return (
-    <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-      <div className="mx-auto max-w-6xl px-4">
-
+    <section className="py-20 bg-gradient-to-b from-[#FFECCD] to-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* HEADER */}
-        <div className="max-w-2xl mb-20">
-          <span className="inline-block mb-3 rounded-full bg-orange-50 px-4 py-1
-                           text-xs font-semibold text-orange-600 uppercase">
+        <div className="text-center max-w-2xl mx-auto mb-20">
+          <span className="inline-block mb-4 rounded-full bg-[#FFF0F0] px-6 py-2 text-sm font-semibold text-[#D51116] uppercase">
             Our Services
           </span>
-
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900">
-            Services Designed to Scale Your Business
+          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
+            Scalable Services to Power Your Business Growth
           </h1>
-
-          <p className="mt-4 text-gray-600">
-            From software development to creative solutions and professional
-            training, we provide end-to-end digital services.
+          <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+            From cutting-edge software solutions to innovative creative services and professional training, we empower businesses to thrive in a digital-first world.
           </p>
         </div>
 
@@ -29,7 +24,6 @@ export default function ServicesOverview() {
             <ServicesSection key={section.category} {...section} />
           ))}
         </div>
-
       </div>
     </section>
   );

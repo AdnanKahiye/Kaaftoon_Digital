@@ -9,12 +9,13 @@ import {
   CreditCard,
   Settings,
   ChevronDown,
+  Menu,
+  X,
 } from "lucide-react";
 
 export default function Sidebar() {
   const pathname = usePathname();
 
-  // ✅ All menus CLOSED by default
   const [open, setOpen] = useState({
     dashboard: false,
     users: false,
@@ -22,7 +23,8 @@ export default function Sidebar() {
     settings: false,
   });
 
-  // ✅ Auto-open menu based on current route (ENTERPRISE UX)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // For mobile view
+
   useEffect(() => {
     setOpen({
       dashboard: pathname === "/dashboard",
@@ -44,20 +46,29 @@ export default function Sidebar() {
 
   const nestedClass = (active: boolean) =>
     `block rounded-lg px-4 py-2 text-sm transition
-     ${
-       active
-         ? "bg-indigo-600 text-white"
-         : "text-gray-300 hover:bg-gray-800 hover:text-white"
-     }`;
+     ${active
+       ? "bg-indigo-600 text-white"
+       : "text-gray-300 hover:bg-gray-800 hover:text-white"}`;
 
   return (
-    <aside className="w-64 min-h-screen bg-gradient-to-b from-gray-900 to-gray-950 border-r border-gray-800 flex flex-col">
+    <aside
+      className={`w-64 min-h-screen bg-gradient-to-b from-gray-900 to-gray-950 border-r border-gray-800 flex flex-col 
+      ${isSidebarOpen ? "block" : "hidden md:block"}`}
+    >
       {/* ===== LOGO ===== */}
       <div className="h-14 flex items-center px-6 border-b border-gray-800">
         <span className="text-lg font-bold text-white">
-          My<span className="text-indigo-500">SaaS</span>
+          <span className="text-indigo-500">S</span>ystem
         </span>
       </div>
+
+      {/* ===== TOGGLE BUTTON FOR MOBILE VIEW ===== */}
+      <button
+        className="md:hidden absolute top-4 right-4 text-white"
+        onClick={() => setIsSidebarOpen((prev) => !prev)}
+      >
+        {isSidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+      </button>
 
       {/* ===== NAVIGATION ===== */}
       <nav className="flex-1 px-4 py-6 space-y-6">
@@ -123,9 +134,7 @@ export default function Sidebar() {
 
             <Link
               href="/dashboard/users/create"
-              className={nestedClass(
-                isActive("/dashboard/users/create")
-              )}
+              className={nestedClass(isActive("/dashboard/users/create"))}
             >
               Create User
             </Link>
@@ -197,7 +206,7 @@ export default function Sidebar() {
 
       {/* ===== FOOTER ===== */}
       <div className="border-t border-gray-800 p-4 text-xs text-gray-500">
-        © {new Date().getFullYear()} My SaaS
+        © {new Date().getFullYear()} System
       </div>
     </aside>
   );

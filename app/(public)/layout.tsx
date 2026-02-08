@@ -1,5 +1,6 @@
 import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
+import LiveChat from "@/components/sections/LiveChat";
 
 export default function PublicLayout({
   children,
@@ -16,6 +17,9 @@ export default function PublicLayout({
       </main>
 
       <PublicFooter />
+
+      {/* LiveChat Component */}
+      <LiveChat />
     </div>
   );
 }

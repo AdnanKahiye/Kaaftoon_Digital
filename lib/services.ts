@@ -31,28 +31,25 @@ export const servicesData = [
       },
       { title: "Content Creation", href: "/services/creative/content-creation" },
     ],
-  },
-  {
-    category: "Learning Services",
-    description:
-      "Practical training and mentorship to help individuals and teams build real-world skills.",
-    items: [
-      {
-        title: "Backend Development & APIs",
-        href: "/services/learning/backend-development",
-      },
-      {
-        title: "Relational Databases & SQL",
-        href: "/services/learning/databases-sql",
-      },
-      {
-        title: "Software Architecture Design",
-        href: "/services/learning/software-architecture",
-      },
-      {
-        title: "DevOps & Containerization",
-        href: "/services/learning/devops-containerization",
-      },
-    ],
-  },
+  },{
+  category: "Consulting Services",
+  description:
+    "Practical consulting and mentorship to help individuals and businesses optimize their operations, integrate technology, and scale successfully.",
+  items: [
+    {
+      title: "Social Media Consulting",
+      href: "/services/Consultancy/Media-Consulting",
+    },
+    {
+      title: "Systems Consulting",
+      href: "/services/Consultancy/Systems-Consulting",
+    },
+    {
+      title: "Startup Business Consulting",
+      href: "/services/Consultancy/startup-business",
+    }
+
+  ],
+}
+
 ];
