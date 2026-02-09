@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Check } from "lucide-react";
 
-const TABS = ["Marketing", "Creative", "Software"] as const; // Reordered tabs
+const TABS = ["Marketing", "Creative", "Software"] as const;
 type Tab = typeof TABS[number];
 
 const PACKAGES: Record<Tab, any[]> = {
   Software: [
     {
+      id: "software-basic",
       name: "Basic",
       price: "$299",
       badge: "",
@@ -19,9 +20,9 @@ const PACKAGES: Record<Tab, any[]> = {
         "Basic SEO Setup",
         "Contact Form Integration",
       ],
-      cta: "/contact",
     },
     {
+      id: "software-special",
       name: "Special",
       price: "$599",
       badge: "POPULAR",
@@ -33,9 +34,9 @@ const PACKAGES: Record<Tab, any[]> = {
         "Performance Optimization",
         "3 Months Support",
       ],
-      cta: "/contact",
     },
     {
+      id: "software-advanced",
       name: "Advanced",
       price: "$999",
       badge: "",
@@ -46,18 +47,18 @@ const PACKAGES: Record<Tab, any[]> = {
         "Security Hardening",
         "6 Months Support",
       ],
-      cta: "/contact",
     },
   ],
   Creative: [
     {
+      id: "creative-starter",
       name: "Starter",
       price: "$99.99",
       badge: "",
       features: ["4 Post Design", "4 Videos", "Normal Logo", "Facebook Management", "Idea Creation"],
-      cta: "/contact",
     },
     {
+      id: "creative-special",
       name: "Special Package",
       price: "$299.99",
       badge: "POPULAR",
@@ -69,9 +70,9 @@ const PACKAGES: Record<Tab, any[]> = {
         "Manage Platforms",
         "Daily Support",
       ],
-      cta: "/contact",
     },
     {
+      id: "creative-advanced",
       name: "Advanced Package",
       price: "$199.99",
       badge: "",
@@ -82,11 +83,11 @@ const PACKAGES: Record<Tab, any[]> = {
         "TikTok + FB Management",
         "Idea Creation",
       ],
-      cta: "/contact",
     },
   ],
   Marketing: [
     {
+      id: "marketing-basic",
       name: "Basic",
       price: "$149",
       badge: "",
@@ -95,9 +96,9 @@ const PACKAGES: Record<Tab, any[]> = {
         "Content Calendar",
         "Basic Ads Campaign",
       ],
-      cta: "/contact",
     },
     {
+      id: "marketing-growth",
       name: "Growth",
       price: "$349",
       badge: "POPULAR",
@@ -107,9 +108,9 @@ const PACKAGES: Record<Tab, any[]> = {
         "SEO Optimization",
         "Analytics and Reports",
       ],
-      cta: "/contact",
     },
     {
+      id: "marketing-scale",
       name: "Scale",
       price: "$649",
       badge: "",
@@ -118,13 +119,18 @@ const PACKAGES: Record<Tab, any[]> = {
         "Email Campaigns",
         "Monthly Strategy Planning",
       ],
-      cta: "/contact",
     },
   ],
 };
 
 export default function ServicesPackagesSection() {
-  const [tab, setTab] = useState<Tab>("Marketing"); // Default tab is "Marketing"
+  const [tab, setTab] = useState<Tab>("Marketing");
+  const router = useRouter();
+
+  const handleGetStarted = (packageId: string, packageName: string, tabName: string) => {
+    // Navigate to form page with package details in query params
+    router.push(`/package-form?package=${packageId}&name=${encodeURIComponent(packageName)}&type=${encodeURIComponent(tabName)}`);
+  };
 
   return (
     <section className="py-16 md:py-20 bg-[#FFECCD]">
@@ -161,7 +167,7 @@ export default function ServicesPackagesSection() {
         <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-8">
           {PACKAGES[tab].map((pkg) => (
             <div
-              key={pkg.name}
+              key={pkg.id}
               className={`group relative flex flex-col h-full rounded-2xl border bg-white p-8
                 transition-all duration-300 ease-out
                 hover:-translate-y-2 hover:shadow-2xl
@@ -205,8 +211,8 @@ export default function ServicesPackagesSection() {
               </ul>
 
               {/* CTA */}
-              <Link
-                href={pkg.cta}
+              <button
+                onClick={() => handleGetStarted(pkg.id, pkg.name, tab)}
                 className={`mt-8 inline-flex w-full items-center justify-center
                   rounded-xl px-4 py-3 text-sm font-semibold
                   transition-all duration-300 group-hover:scale-105
@@ -217,7 +223,7 @@ export default function ServicesPackagesSection() {
                   }`}
               >
                 Get Started
-              </Link>
+              </button>
             </div>
           ))}
         </div>

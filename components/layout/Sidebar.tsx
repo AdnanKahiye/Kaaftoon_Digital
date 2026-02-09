@@ -8,206 +8,211 @@ import {
   Users,
   CreditCard,
   Settings,
+  Package,
   ChevronDown,
   Menu,
   X,
 } from "lucide-react";
 
+type MenuKey = "dashboard" | "users" | "billing" | "packages" | "settings";
+
 export default function Sidebar() {
   const pathname = usePathname();
 
-  const [open, setOpen] = useState({
+  const [open, setOpen] = useState<Record<MenuKey, boolean>>({
     dashboard: false,
     users: false,
     billing: false,
+    packages: false,
     settings: false,
   });
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // For mobile view
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {
     setOpen({
       dashboard: pathname === "/dashboard",
       users: pathname.startsWith("/dashboard/users"),
       billing: pathname.startsWith("/dashboard/billing"),
+      packages: pathname.startsWith("/dashboard/packages"),
       settings: pathname.startsWith("/dashboard/settings"),
     });
   }, [pathname]);
 
-  const toggle = (key: keyof typeof open) => {
-    setOpen((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+  const toggle = (key: MenuKey) => {
+    setOpen(prev =>
+      Object.keys(prev).reduce((acc, k) => {
+        acc[k as MenuKey] = k === key ? !prev[key] : false;
+        return acc;
+      }, {} as Record<MenuKey, boolean>)
+    );
   };
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href + "/");
 
   const nestedClass = (active: boolean) =>
-    `block rounded-lg px-4 py-2 text-sm transition
-     ${active
-       ? "bg-indigo-600 text-white"
-       : "text-gray-300 hover:bg-gray-800 hover:text-white"}`;
+    `block rounded-md px-4 py-2 text-sm transition
+     ${
+       active
+         ? "bg-indigo-600 text-white"
+         : "text-gray-300 hover:bg-gray-800 hover:text-white"
+     }`;
 
   return (
     <aside
-      className={`w-64 min-h-screen bg-gradient-to-b from-gray-900 to-gray-950 border-r border-gray-800 flex flex-col 
-      ${isSidebarOpen ? "block" : "hidden md:block"}`}
+      className={`fixed md:static inset-y-0 left-0 z-40 w-55 bg-gradient-to-b from-gray-900 to-gray-950 border-r border-gray-800 flex flex-col
+      ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+      transition-transform duration-300`}
     >
-      {/* ===== LOGO ===== */}
+      {/* LOGO */}
       <div className="h-14 flex items-center px-6 border-b border-gray-800">
         <span className="text-lg font-bold text-white">
           <span className="text-indigo-500">S</span>ystem
         </span>
       </div>
 
-      {/* ===== TOGGLE BUTTON FOR MOBILE VIEW ===== */}
+      {/* MOBILE TOGGLE */}
       <button
         className="md:hidden absolute top-4 right-4 text-white"
-        onClick={() => setIsSidebarOpen((prev) => !prev)}
+        onClick={() => setIsSidebarOpen(p => !p)}
       >
-        {isSidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        {isSidebarOpen ? <X size={22} /> : <Menu size={22} />}
       </button>
 
-      {/* ===== NAVIGATION ===== */}
-      <nav className="flex-1 px-4 py-6 space-y-6">
-        {/* ===== DASHBOARD ===== */}
-        <div>
-          <button
-            onClick={() => toggle("dashboard")}
-            className="w-full flex items-center justify-between text-gray-400 hover:text-white mb-2"
-          >
-            <div className="flex items-center gap-2 text-xs uppercase tracking-wide">
-              <LayoutDashboard className="h-4 w-4" />
-              Dashboard
-            </div>
-            <ChevronDown
-              className={`h-4 w-4 transition-transform ${
-                open.dashboard ? "rotate-0" : "-rotate-90"
-              }`}
-            />
-          </button>
+      {/* NAV */}
+      <nav className="flex-1 px-4 py-6 space-y-5">
+        {/* DASHBOARD */}
+        <Section
+          title="Dashboard"
+          icon={<LayoutDashboard size={16} />}
+          open={open.dashboard}
+          onClick={() => toggle("dashboard")}
+        >
+          <Link href="/dashboard" className={nestedClass(isActive("/dashboard"))}>
+            Overview
+          </Link>
+        </Section>
 
-          <div
-            className={`overflow-hidden transition-all duration-300 ${
-              open.dashboard ? "max-h-20" : "max-h-0"
-            }`}
+        {/* USERS */}
+        <Section
+          title="Users"
+          icon={<Users size={16} />}
+          open={open.users}
+          onClick={() => toggle("users")}
+        >
+          <Link
+            href="/dashboard/users"
+            className={nestedClass(isActive("/dashboard/users"))}
           >
-            <Link
-              href="/dashboard"
-              className={nestedClass(isActive("/dashboard"))}
-            >
-              Overview
-            </Link>
-          </div>
-        </div>
-
-        {/* ===== USERS ===== */}
-        <div>
-          <button
-            onClick={() => toggle("users")}
-            className="w-full flex items-center justify-between text-gray-400 hover:text-white mb-2"
+            List Users
+          </Link>
+          <Link
+            href="/dashboard/users/create"
+            className={nestedClass(isActive("/dashboard/users/create"))}
           >
-            <div className="flex items-center gap-2 text-xs uppercase tracking-wide">
-              <Users className="h-4 w-4" />
-              Users
-            </div>
-            <ChevronDown
-              className={`h-4 w-4 transition-transform ${
-                open.users ? "rotate-0" : "-rotate-90"
-              }`}
-            />
-          </button>
+            Create User
+          </Link>
+        </Section>
 
-          <div
-            className={`ml-2 space-y-1 overflow-hidden transition-all duration-300 ${
-              open.users ? "max-h-32" : "max-h-0"
-            }`}
+        {/* PACKAGES */}
+        <Section
+          title="Packages"
+          icon={<Package size={16} />}
+          open={open.packages}
+          onClick={() => toggle("packages")}
+        >
+          <Link
+            href="/dashboard/packages"
+            className={nestedClass(isActive("/dashboard/packages"))}
           >
-            <Link
-              href="/dashboard/users"
-              className={nestedClass(isActive("/dashboard/users"))}
-            >
-              List Users
-            </Link>
-
-            <Link
-              href="/dashboard/users/create"
-              className={nestedClass(isActive("/dashboard/users/create"))}
-            >
-              Create User
-            </Link>
-          </div>
-        </div>
-
-        {/* ===== BILLING ===== */}
-        <div>
-          <button
-            onClick={() => toggle("billing")}
-            className="w-full flex items-center justify-between text-gray-400 hover:text-white mb-2"
+            All Packages
+          </Link>
+          <Link
+            href="/dashboard/packages/create"
+            className={nestedClass(isActive("/dashboard/packages/create"))}
           >
-            <div className="flex items-center gap-2 text-xs uppercase tracking-wide">
-              <CreditCard className="h-4 w-4" />
-              Billing
-            </div>
-            <ChevronDown
-              className={`h-4 w-4 transition-transform ${
-                open.billing ? "rotate-0" : "-rotate-90"
-              }`}
-            />
-          </button>
+            Create Package
+          </Link>
+        </Section>
 
-          <div
-            className={`ml-2 overflow-hidden transition-all duration-300 ${
-              open.billing ? "max-h-20" : "max-h-0"
-            }`}
+        {/* BILLING */}
+        <Section
+          title="Billing"
+          icon={<CreditCard size={16} />}
+          open={open.billing}
+          onClick={() => toggle("billing")}
+        >
+          <Link
+            href="/dashboard/billing"
+            className={nestedClass(isActive("/dashboard/billing"))}
           >
-            <Link
-              href="/dashboard/billing"
-              className={nestedClass(isActive("/dashboard/billing"))}
-            >
-              Payments
-            </Link>
-          </div>
-        </div>
+            Payments
+          </Link>
+        </Section>
 
-        {/* ===== SETTINGS ===== */}
-        <div>
-          <button
-            onClick={() => toggle("settings")}
-            className="w-full flex items-center justify-between text-gray-400 hover:text-white mb-2"
+        {/* SETTINGS */}
+        <Section
+          title="Settings"
+          icon={<Settings size={16} />}
+          open={open.settings}
+          onClick={() => toggle("settings")}
+        >
+          <Link
+            href="/dashboard/settings"
+            className={nestedClass(isActive("/dashboard/settings"))}
           >
-            <div className="flex items-center gap-2 text-xs uppercase tracking-wide">
-              <Settings className="h-4 w-4" />
-              Settings
-            </div>
-            <ChevronDown
-              className={`h-4 w-4 transition-transform ${
-                open.settings ? "rotate-0" : "-rotate-90"
-              }`}
-            />
-          </button>
-
-          <div
-            className={`ml-2 overflow-hidden transition-all duration-300 ${
-              open.settings ? "max-h-20" : "max-h-0"
-            }`}
-          >
-            <Link
-              href="/dashboard/settings"
-              className={nestedClass(isActive("/dashboard/settings"))}
-            >
-              System Settings
-            </Link>
-          </div>
-        </div>
+            System Settings
+          </Link>
+        </Section>
       </nav>
 
-      {/* ===== FOOTER ===== */}
+      {/* FOOTER */}
       <div className="border-t border-gray-800 p-4 text-xs text-gray-500">
         © {new Date().getFullYear()} System
       </div>
     </aside>
+  );
+}
+
+/* ===== REUSABLE SECTION COMPONENT ===== */
+
+function Section({
+  title,
+  icon,
+  open,
+  onClick,
+  children,
+}: {
+  title: string;
+  icon: React.ReactNode;
+  open: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <button
+        onClick={onClick}
+        className="w-full flex items-center justify-between text-gray-400 hover:text-white"
+      >
+        <div className="flex items-center gap-2 text-xs uppercase tracking-wide">
+          {icon}
+          {title}
+        </div>
+        <ChevronDown
+          size={16}
+          className={`transition-transform ${open ? "rotate-0" : "-rotate-90"}`}
+        />
+      </button>
+
+      <div
+        className={`ml-2 mt-2 space-y-1 overflow-hidden transition-all duration-300 ${
+          open ? "max-h-40" : "max-h-0"
+        }`}
+      >
+        {children}
+      </div>
+    </div>
   );
 }
