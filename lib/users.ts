@@ -11,6 +11,8 @@ export const UsersService = {
   },
 
   create(data: any) {
+    alert("Creating user with data: " + JSON.stringify(data));
+    
     console.log("Creating user with data:", data);
     return api.post("/User/create", data);
   },

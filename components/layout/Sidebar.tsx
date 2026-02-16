@@ -3,216 +3,253 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import {
   LayoutDashboard,
-  Users,
   CreditCard,
   Settings,
   Package,
   ChevronDown,
   Menu,
   X,
+  Search,
 } from "lucide-react";
 
-type MenuKey = "dashboard" | "users" | "billing" | "packages" | "settings";
+type Role = "Administrator" | "Manager" | "Employee" | "User";
 
-export default function Sidebar() {
+interface SidebarProps {
+  onCollapse?: (collapsed: boolean) => void;
+}
+
+/* ================= MENU CONFIG ================= */
+
+const MENU_ITEMS = [
+  {
+    key: "dashboard",
+    title: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+    roles: ["Administrator", "Manager", "Employee", "User"] as Role[],
+  },
+  {
+    key: "settings",
+    title: "Settings",
+    icon: Settings,
+    roles: ["Administrator"] as Role[],
+    children: [
+      { title: "Users", href: "/dashboard/users" },
+      { title: "Category", href: "/dashboard/Services" },
+      { title: "Services", href: "/dashboard/Item" },
+    ],
+  },
+  {
+    key: "packages",
+    title: "Packages",
+    icon: Package,
+    roles: ["Administrator", "Manager"] as Role[],
+    children: [
+      { title: "All Packages", href: "/dashboard/packages" },
+      { title: "Package Requests", href: "/dashboard/packagesRequest" },
+    ],
+  },
+  {
+    key: "customers",
+    title: "Customers",
+    icon: Package,
+    roles: ["Administrator", "Manager"] as Role[],
+    children: [
+      { title: "All Customers", href: "/dashboard/Customer" },
+      { title: "Sales Customers", href: "/dashboard/Sales" },
+       { title: "Sales List", href: "/dashboard/Sale" },
+    ],
+  },
+  {
+    key: "billing",
+    title: "Billing",
+    icon: CreditCard,
+    roles: ["Administrator"] as Role[],
+    children: [{ title: "Payments", href: "/dashboard/unpaid" }],
+  },
+];
+
+/* ================= SIDEBAR ================= */
+
+export default function Sidebar({ onCollapse }: SidebarProps) {
   const pathname = usePathname();
+  const { user } = useAuth();
+  const role = user?.role as Role | undefined;
 
-  const [open, setOpen] = useState<Record<MenuKey, boolean>>({
-    dashboard: false,
-    users: false,
-    billing: false,
-    packages: false,
-    settings: false,
-  });
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [open, setOpen] = useState<Record<string, boolean>>({});
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  /* ===== Auto open active section ===== */
 
   useEffect(() => {
-    setOpen({
-      dashboard: pathname === "/dashboard",
-      users: pathname.startsWith("/dashboard/users"),
-      billing: pathname.startsWith("/dashboard/billing"),
-      packages: pathname.startsWith("/dashboard/packages"),
-      settings: pathname.startsWith("/dashboard/settings"),
-    });
+    const activeSection = MENU_ITEMS.find(item =>
+      item.children?.some(child =>
+        pathname.startsWith(child.href)
+      )
+    );
+
+    if (activeSection) {
+      setOpen(prev => ({
+        ...prev,
+        [activeSection.key]: true,
+      }));
+    }
   }, [pathname]);
 
-  const toggle = (key: MenuKey) => {
-    setOpen(prev =>
-      Object.keys(prev).reduce((acc, k) => {
-        acc[k as MenuKey] = k === key ? !prev[key] : false;
-        return acc;
-      }, {} as Record<MenuKey, boolean>)
-    );
+  /* ===== Filter by role ===== */
+
+  const allowedMenus = MENU_ITEMS.filter(item =>
+    role ? item.roles.includes(role) : false
+  );
+
+  /* ===== Collapse persistence ===== */
+
+  useEffect(() => {
+    const saved = localStorage.getItem("sidebarCollapsed");
+    if (saved) {
+      const collapsed = saved === "true";
+      setIsCollapsed(collapsed);
+      onCollapse?.(collapsed);
+    }
+  }, [onCollapse]);
+
+  useEffect(() => {
+    setIsMobileOpen(false);
+  }, [pathname]);
+
+  /* ===== Toggle section ===== */
+
+  const toggle = (key: string) => {
+    if (isCollapsed) return;
+
+    setOpen(prev => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
+
+  const toggleCollapse = () => {
+    const newState = !isCollapsed;
+    setIsCollapsed(newState);
+    localStorage.setItem("sidebarCollapsed", String(newState));
+    onCollapse?.(newState);
   };
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href + "/");
 
   const nestedClass = (active: boolean) =>
-    `block rounded-md px-4 py-2 text-sm transition
-     ${
-       active
-         ? "bg-indigo-600 text-white"
-         : "text-gray-300 hover:bg-gray-800 hover:text-white"
-     }`;
+    `flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition-all duration-200
+    ${active ? "text-white" : "text-gray-400 hover:bg-gray-800/60 hover:text-white"}`;
+
+  /* ================= RENDER ================= */
 
   return (
-    <aside
-      className={`fixed md:static inset-y-0 left-0 z-40 w-55 bg-gradient-to-b from-gray-900 to-gray-950 border-r border-gray-800 flex flex-col
-      ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
-      transition-transform duration-300`}
-    >
-      {/* LOGO */}
-      <div className="h-14 flex items-center px-6 border-b border-gray-800">
-        <span className="text-lg font-bold text-white">
-          <span className="text-indigo-500">S</span>ystem
-        </span>
-      </div>
-
-      {/* MOBILE TOGGLE */}
-      <button
-        className="md:hidden absolute top-4 right-4 text-white"
-        onClick={() => setIsSidebarOpen(p => !p)}
-      >
-        {isSidebarOpen ? <X size={22} /> : <Menu size={22} />}
-      </button>
-
-      {/* NAV */}
-      <nav className="flex-1 px-4 py-6 space-y-5">
-        {/* DASHBOARD */}
-        <Section
-          title="Dashboard"
-          icon={<LayoutDashboard size={16} />}
-          open={open.dashboard}
-          onClick={() => toggle("dashboard")}
-        >
-          <Link href="/dashboard" className={nestedClass(isActive("/dashboard"))}>
-            Overview
-          </Link>
-        </Section>
-
-        {/* USERS */}
-        <Section
-          title="Users"
-          icon={<Users size={16} />}
-          open={open.users}
-          onClick={() => toggle("users")}
-        >
-          <Link
-            href="/dashboard/users"
-            className={nestedClass(isActive("/dashboard/users"))}
-          >
-            List Users
-          </Link>
-          <Link
-            href="/dashboard/users/create"
-            className={nestedClass(isActive("/dashboard/users/create"))}
-          >
-            Create User
-          </Link>
-        </Section>
-
-        {/* PACKAGES */}
-        <Section
-          title="Packages"
-          icon={<Package size={16} />}
-          open={open.packages}
-          onClick={() => toggle("packages")}
-        >
-          <Link
-            href="/dashboard/packages"
-            className={nestedClass(isActive("/dashboard/packages"))}
-          >
-            All Packages
-          </Link>
-          <Link
-            href="/dashboard/packages/create"
-            className={nestedClass(isActive("/dashboard/packages/create"))}
-          >
-            Create Package
-          </Link>
-        </Section>
-
-        {/* BILLING */}
-        <Section
-          title="Billing"
-          icon={<CreditCard size={16} />}
-          open={open.billing}
-          onClick={() => toggle("billing")}
-        >
-          <Link
-            href="/dashboard/billing"
-            className={nestedClass(isActive("/dashboard/billing"))}
-          >
-            Payments
-          </Link>
-        </Section>
-
-        {/* SETTINGS */}
-        <Section
-          title="Settings"
-          icon={<Settings size={16} />}
-          open={open.settings}
-          onClick={() => toggle("settings")}
-        >
-          <Link
-            href="/dashboard/settings"
-            className={nestedClass(isActive("/dashboard/settings"))}
-          >
-            System Settings
-          </Link>
-        </Section>
-      </nav>
-
-      {/* FOOTER */}
-      <div className="border-t border-gray-800 p-4 text-xs text-gray-500">
-        © {new Date().getFullYear()} System
-      </div>
-    </aside>
-  );
-}
-
-/* ===== REUSABLE SECTION COMPONENT ===== */
-
-function Section({
-  title,
-  icon,
-  open,
-  onClick,
-  children,
-}: {
-  title: string;
-  icon: React.ReactNode;
-  open: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <button
-        onClick={onClick}
-        className="w-full flex items-center justify-between text-gray-400 hover:text-white"
-      >
-        <div className="flex items-center gap-2 text-xs uppercase tracking-wide">
-          {icon}
-          {title}
-        </div>
-        <ChevronDown
-          size={16}
-          className={`transition-transform ${open ? "rotate-0" : "-rotate-90"}`}
+    <>
+      {isMobileOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/50 md:hidden"
+          onClick={() => setIsMobileOpen(false)}
         />
-      </button>
+      )}
 
-      <div
-        className={`ml-2 mt-2 space-y-1 overflow-hidden transition-all duration-300 ${
-          open ? "max-h-40" : "max-h-0"
-        }`}
+      <aside
+        className={`fixed inset-y-0 left-0 z-40 flex flex-col
+        bg-gradient-to-b from-gray-900 to-gray-950 border-r border-gray-800
+        transition-all duration-300
+        ${isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+        ${isCollapsed ? "w-20" : "w-56"}`}
       >
-        {children}
-      </div>
-    </div>
+        {/* Header */}
+        <div className={`flex h-16 items-center border-b border-gray-800
+          ${isCollapsed ? "justify-center" : "justify-between px-4"}`}>
+          {!isCollapsed ? (
+            <>
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 flex items-center justify-center bg-indigo-600 rounded-lg text-white font-bold">
+                  S
+                </div>
+                <span className="text-white font-semibold">System</span>
+              </div>
+              <button onClick={toggleCollapse}>
+                <Menu size={18} className="text-gray-400" />
+              </button>
+            </>
+          ) : (
+            <button onClick={toggleCollapse}>
+              <Menu size={18} className="text-gray-400" />
+            </button>
+          )}
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-2">
+          {allowedMenus.map(item => {
+            const Icon = item.icon;
+
+            if (!item.children) {
+              return (
+                <Link
+                  key={item.key}
+                  href={item.href!}
+                  className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition
+                  ${isActive(item.href!)
+                    ? "bg-indigo-600 text-white"
+                    : "text-gray-400 hover:bg-gray-800 hover:text-white"}`}
+                >
+                  <Icon size={18} />
+                  {!isCollapsed && <span>{item.title}</span>}
+                </Link>
+              );
+            }
+
+            return (
+              <div key={item.key} className="space-y-1">
+                <button
+                  onClick={() => toggle(item.key)}
+                  className="flex w-full items-center justify-between rounded-lg px-4 py-2.5 text-sm text-gray-400 hover:bg-gray-800 hover:text-white"
+                >
+                  <div className="flex items-center gap-3">
+                    <Icon size={18} />
+                    {!isCollapsed && <span>{item.title}</span>}
+                  </div>
+                  {!isCollapsed && (
+                    <ChevronDown
+                      size={16}
+                      className={`transition-transform duration-300
+                      ${open[item.key] ? "rotate-0" : "-rotate-90"}`}
+                    />
+                  )}
+                </button>
+
+                {/* Smooth animation */}
+                <div
+                  className={`overflow-hidden transition-all duration-300 ease-in-out
+                  ${open[item.key] && !isCollapsed
+                    ? "max-h-96 opacity-100"
+                    : "max-h-0 opacity-0"}`}
+                >
+                  <div className="ml-4 space-y-1 py-1">
+                    {item.children.map(child => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        className={nestedClass(isActive(child.href))}
+                      >
+                        {!isCollapsed && child.title}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </nav>
+      </aside>
+    </>
   );
 }

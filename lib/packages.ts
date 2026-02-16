@@ -11,6 +11,15 @@ export interface PackageRequest {
   features: string[];
 }
 
+
+export interface PackageRequestDto {
+  name: string;
+  email: string;
+  phone: string;
+  packageId: string;
+  message: string;
+}
+
 export const packageService = {
   /* =========================
      GET ALL PACKAGES
@@ -18,6 +27,16 @@ export const packageService = {
   ========================= */
   getPackages() {
     return api.get("/package/get-packages");
+  },
+
+
+   getPackagesOnly() {
+    return api.get("/package/get-onlypackages");
+  },
+
+
+    getReuqestPackages() {
+    return api.get("/package/get-request-packages");
   },
 
   /* =========================
@@ -36,12 +55,34 @@ export const packageService = {
     return api.post("/package/create-packages", data);
   },
 
+
+   createequestPackage(data: PackageRequestDto) {
+    
+    alert(JSON.stringify(data));
+    return api.post("/Package/create-packages-request", data);
+  },
+
+  
+
+
+
   /* =========================
      UPDATE PACKAGE
      PUT: /api/package/update-package/{id}
+
   ========================= */
   updatePackage(id: string, data: PackageRequest) {
     return api.put(`/package/update-package/${id}`, data);
+  },
+
+
+
+    updateRequestPackage(id: string, data: PackageRequestDto) {
+    return api.put(`/package/update-request-package/${id}`, data);
+  },
+
+    deletePackageRequest(id: string) {
+    return api.delete(`/package/delete-request-package/${id}`);
   },
 
   /* =========================

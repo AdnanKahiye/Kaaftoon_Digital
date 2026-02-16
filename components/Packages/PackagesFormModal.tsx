@@ -5,9 +5,9 @@ import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import { toast } from "react-hot-toast";
 
-/* =========================
-   Types
-========================= */
+// =========================
+// Types
+// =========================
 export type PackageType = "Marketing" | "Software" | "Creative";
 
 export interface PackageFormData {
@@ -26,9 +26,9 @@ interface Props {
   onSubmit: (data: PackageFormData) => Promise<void> | void;
 }
 
-/* =========================
-   Defaults
-========================= */
+// =========================
+// Defaults
+// =========================
 const emptyForm: PackageFormData = {
   name: "",
   description: "",
@@ -50,18 +50,18 @@ export default function PackageFormModal({
     useState<Partial<Record<keyof PackageFormData, string>>>({});
   const [loading, setLoading] = useState(false);
 
-  /* =========================
-     INIT
-  ========================= */
+  // =========================
+  // INIT
+  // =========================
   useEffect(() => {
     setForm(mode === "edit" && initialData ? initialData : emptyForm);
     setErrors({});
     setFeatureInput("");
   }, [mode, initialData, open]);
 
-  /* =========================
-     UPDATE
-  ========================= */
+  // =========================
+  // UPDATE
+  // =========================
   const update = <K extends keyof PackageFormData>(
     key: K,
     value: PackageFormData[K]
@@ -70,9 +70,9 @@ export default function PackageFormModal({
     setErrors((e) => ({ ...e, [key]: undefined }));
   };
 
-  /* =========================
-     FEATURES
-  ========================= */
+  // =========================
+  // FEATURES
+  // =========================
   const addFeature = () => {
     if (!featureInput.trim()) return;
     update("features", [...form.features, featureInput.trim()]);
@@ -86,9 +86,9 @@ export default function PackageFormModal({
     );
   };
 
-  /* =========================
-     VALIDATION
-  ========================= */
+  // =========================
+  // VALIDATION
+  // =========================
   const validate = () => {
     const e: typeof errors = {};
     if (!form.name.trim()) e.name = "Name is required";
@@ -101,9 +101,9 @@ export default function PackageFormModal({
     return Object.keys(e).length === 0;
   };
 
-  /* =========================
-     SUBMIT
-  ========================= */
+  // =========================
+  // SUBMIT
+  // =========================
   const submit = async () => {
     if (!validate() || loading) return;
     setLoading(true);
@@ -180,28 +180,31 @@ export default function PackageFormModal({
               </button>
             </div>
 
-            <ul className="mt-3 space-y-2">
-              {form.features.map((f, i) => (
-                <li
-                  key={i}
-                  className="flex items-center justify-between rounded-md bg-gray-100 px-3 py-2 text-sm dark:bg-gray-800"
-                >
-                  {f}
-                  <button
-                    type="button"
-                    className="text-red-500"
-                    onClick={() => removeFeature(i)}
+            {/* Scrollable Features List */}
+            <div className="mt-3 max-h-48 overflow-y-scroll">
+              <ul className="space-y-2">
+                {form.features.map((f, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center justify-between rounded-md bg-gray-100 px-3 py-2 text-sm dark:bg-gray-800"
                   >
-                    Remove
-                  </button>
-                </li>
-              ))}
-            </ul>
+                    {f}
+                    <button
+                      type="button"
+                      className="text-red-500"
+                      onClick={() => removeFeature(i)}
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </Field>
         </div>
 
-        {/* Footer */}
-        <div className="flex justify-end gap-2 border-t p-4 dark:border-gray-800">
+        {/* Footer - Fixed Submit Button */}
+        <div className="flex justify-end gap-2 border-t p-4 dark:border-gray-800 bg-white dark:bg-gray-900">
           <button
             type="button"
             onClick={onClose}

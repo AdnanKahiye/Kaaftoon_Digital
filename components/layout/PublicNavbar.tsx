@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useRef } from "react";
-import { Phone, Mail, Facebook, Twitter, Linkedin } from "lucide-react";
+import { Phone, Mail, Facebook, Twitter, Linkedin, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export default function PublicNavbar() {
@@ -102,7 +102,7 @@ export default function PublicNavbar() {
             <NavLink href="/contact" pathname={pathname}>Contact Us</NavLink>
           </nav>
 
-          {/* LOGIN */}
+          {/* LOGIN - DESKTOP */}
           <Link
             href="/auth/login"
             className="hidden lg:inline-flex rounded-full bg-[#D51116] px-6 py-3 text-white font-semibold hover:bg-[#F39220] transition"
@@ -110,25 +110,96 @@ export default function PublicNavbar() {
             Login
           </Link>
 
-          {/* MOBILE */}
-          <button className="lg:hidden text-2xl" onClick={() => setMobileOpen(!mobileOpen)}>
-            ☰
+          {/* MOBILE MENU BUTTON */}
+          <button 
+            className="lg:hidden text-2xl p-2 text-gray-700 hover:text-[#D51116]"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X className="h-6 w-6" /> : "☰"}
           </button>
         </div>
 
         {/* ================= MOBILE MENU ================= */}
-        {mobileOpen && (
-          <div className="lg:hidden bg-[#FFECCD] shadow px-6 py-6">
-            <nav className="flex flex-col gap-4 font-medium text-[#D51116]">
-              <Link href="/">Home</Link>
-              <Link href="/services">Services</Link>
-              <Link href="/portfolio">Portfolio</Link>
-              <Link href="/packages">Packages</Link>
-              <Link href="/about-us">Who we are</Link>
-              <Link href="/contact">Contact</Link>
+        <div className={`
+          lg:hidden fixed inset-x-0 bg-[#FFECCD] shadow-lg transition-all duration-300 ease-in-out
+          ${mobileOpen 
+            ? "opacity-100 translate-y-0 pointer-events-auto" 
+            : "opacity-0 -translate-y-4 pointer-events-none"}
+        `}>
+          <div className="px-6 py-8">
+            <nav className="flex flex-col items-center gap-6">
+              {/* MOBILE NAV LINKS - CENTERED */}
+              <Link 
+                href="/" 
+                onClick={() => setMobileOpen(false)}
+                className={`text-lg font-medium transition hover:text-[#D51116] ${
+                  pathname === "/" ? "text-[#D51116] font-bold" : "text-gray-700"
+                }`}
+              >
+                Home
+              </Link>
+              
+              <Link 
+                href="/services" 
+                onClick={() => setMobileOpen(false)}
+                className={`text-lg font-medium transition hover:text-[#D51116] ${
+                  pathname === "/services" ? "text-[#D51116] font-bold" : "text-gray-700"
+                }`}
+              >
+                Services
+              </Link>
+              
+              <Link 
+                href="/portfolio" 
+                onClick={() => setMobileOpen(false)}
+                className={`text-lg font-medium transition hover:text-[#D51116] ${
+                  pathname === "/portfolio" ? "text-[#D51116] font-bold" : "text-gray-700"
+                }`}
+              >
+                Portfolio
+              </Link>
+              
+              <Link 
+                href="/packages" 
+                onClick={() => setMobileOpen(false)}
+                className={`text-lg font-medium transition hover:text-[#D51116] ${
+                  pathname === "/packages" ? "text-[#D51116] font-bold" : "text-gray-700"
+                }`}
+              >
+                Packages
+              </Link>
+              
+              <Link 
+                href="/about-us" 
+                onClick={() => setMobileOpen(false)}
+                className={`text-lg font-medium transition hover:text-[#D51116] ${
+                  pathname === "/about-us" ? "text-[#D51116] font-bold" : "text-gray-700"
+                }`}
+              >
+                Who we are
+              </Link>
+              
+              <Link 
+                href="/contact" 
+                onClick={() => setMobileOpen(false)}
+                className={`text-lg font-medium transition hover:text-[#D51116] ${
+                  pathname === "/contact" ? "text-[#D51116] font-bold" : "text-gray-700"
+                }`}
+              >
+                Contact
+              </Link>
+
+              {/* LOGIN - MOBILE - CENTERED */}
+              <Link
+                href="/auth/login"
+                onClick={() => setMobileOpen(false)}
+                className="mt-4 inline-flex rounded-full bg-[#D51116] px-8 py-3 text-white font-semibold hover:bg-[#F39220] transition w-auto"
+              >
+                Login
+              </Link>
             </nav>
           </div>
-        )}
+        </div>
       </header>
     </>
   );

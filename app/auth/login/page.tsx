@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AuthService } from "@/lib/auth";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,25 +13,27 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+const { login } = useAuth();
 
-    try {
-      await AuthService.login({
-        usernameOrEmail: email,
-        password,
-      });
+const handleSubmit = async (e: React.FormEvent) => {
+  console.log("FORM SUBMITTED"); // KU DAR
+  e.preventDefault();
 
-     
-      router.push("/dashboard");
-    } catch (err: any) {
-      setError("Invalid email or password");
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  setError("");
+
+  const success = await login(email, password);
+
+  if (success) {
+    router.push("/dashboard");
+  } else {
+    setError("Invalid email or password");
+  }
+
+  setLoading(false);
+};
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -83,12 +86,12 @@ export default function LoginPage() {
 
           {/* Forgot password */}
           <div className="text-right text-sm">
-            <a
+            {/* <a
               href="/auth/forgot-password"
               className="text-indigo-600 hover:underline"
             >
               Forgot password?
-            </a>
+            </a> */}
           </div>
 
           {/* Button */}
@@ -101,16 +104,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* Register */}
-        <p className="text-center text-sm text-gray-600 mt-6">
-          Don’t have an account?{" "}
-          <a
-            href="/auth/register"
-            className="text-indigo-600 font-medium hover:underline"
-          >
-            Register
-          </a>
-        </p>
+      
       </div>
     </div>
   );

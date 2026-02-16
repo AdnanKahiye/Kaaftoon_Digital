@@ -1,9 +1,21 @@
+// Mark this file as a Client Component
 "use client";
 
 import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { packageService } from "@/lib/packages";
 
+// Define interface for form data structure
+export interface PackageRequestFormData {
+  name: string;
+  email: string;
+  phone: string;
+  packageId: string;
+  message: string;
+}
+
+// Component to handle the package request form content
 function PackageFormContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -12,19 +24,22 @@ function PackageFormContent() {
   const packageName = searchParams.get("name") || "Selected Package";
   const packageType = searchParams.get("type") || "";
 
-  const [formData, setFormData] = useState({
+  // State to manage form data
+  const [formData, setFormData] = useState<PackageRequestFormData>({
     name: "",
     email: "",
     phone: "",
-    company: "",
+    packageId: packageId, // Set the initial packageId from the search param
     message: "",
   });
 
+  // State to manage submission process
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
 
+  // Handle form input changes
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -33,33 +48,37 @@ function PackageFormContent() {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Simulate API call (Replace this with the actual API call)
+      const res = await packageService.createequestPackage(formData);
       
-      console.log("Package Request Submitted:", {
-        packageId,
-        packageName,
-        packageType,
-        ...formData,
-      });
-
-      // Show success message
-      setSubmitMessage("Thank you! We've received your request. Our team will contact you within 24 hours.");
-      
-      // Reset form after 3 seconds and redirect
-      setTimeout(() => {
-        router.push("/");
-      }, 3000);
+      if (res) {
+        // Success message on successful form submission
+        setSubmitMessage("Thank you! We've received your request. Our team will contact you within 24 hours.");
+        
+        // Reset the form and redirect after 3 seconds
+        setTimeout(() => {
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+            packageId: "",  // Optionally reset the packageId if required
+            message: "",
+          });
+          router.push("/"); // Redirect to home page after submission
+        }, 3000);
+      }
     } catch (error) {
+      // Handle any submission errors
       console.error("Submission error:", error);
       setSubmitMessage("Something went wrong. Please try again.");
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false); // Reset submitting state
     }
   };
 
@@ -170,25 +189,6 @@ function PackageFormContent() {
                     placeholder="+1 (555) 123-4567"
                   />
                 </div>
-
-                {/* Company */}
-                <div>
-                  <label
-                    htmlFor="company"
-                    className="block text-sm font-semibold text-gray-700 mb-2"
-                  >
-                    Company Name
-                  </label>
-                  <input
-                    type="text"
-                    id="company"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#D51116] focus:ring-2 focus:ring-[#D51116]/20 outline-none transition"
-                    placeholder="Your Company"
-                  />
-                </div>
               </div>
 
               {/* Message */}
@@ -268,13 +268,16 @@ function PackageFormContent() {
   );
 }
 
+// Main Page Component
 export default function PackageFormPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-[#FFECCD] flex items-center justify-center">
-        <div className="animate-pulse text-[#D51116]">Loading form...</div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#FFECCD] flex items-center justify-center">
+          <div className="animate-pulse text-[#D51116]">Loading form...</div>
+        </div>
+      }
+    >
       <PackageFormContent />
     </Suspense>
   );

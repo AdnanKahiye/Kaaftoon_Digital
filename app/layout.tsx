@@ -1,4 +1,5 @@
 import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata = {
   title: "My SaaS Platform",
@@ -12,7 +13,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }
