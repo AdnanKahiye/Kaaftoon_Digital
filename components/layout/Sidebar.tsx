@@ -35,7 +35,7 @@ const MENU_ITEMS = [
     key: "settings",
     title: "Settings",
     icon: Settings,
-    roles: ["Administrator"] as Role[],
+    roles: ["Administrator","Manager"] as Role[],
     children: [
       { title: "Users", href: "/dashboard/users" },
       { title: "Category", href: "/dashboard/Services" },
@@ -67,7 +67,7 @@ const MENU_ITEMS = [
     key: "billing",
     title: "Billing",
     icon: CreditCard,
-    roles: ["Administrator"] as Role[],
+    roles: ["Administrator" ,"Manager"] as Role[],
     children: [{ title: "Payments", href: "/dashboard/unpaid" }],
   },
 ];
