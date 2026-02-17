@@ -2,7 +2,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata = {
-  title: "My SaaS Platform",
+  title: "Kaaftoon Solutions Technology",
   description: "SaaS built with Next.js",
 };
 
