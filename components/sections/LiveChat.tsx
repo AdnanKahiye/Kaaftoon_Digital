@@ -9,7 +9,7 @@ export default function LiveChat() {
 
   const handleSendToWhatsApp = () => {
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/252610631155?text=${encodedMessage}`, '_blank');
+    window.open(`https://wa.me/252612024843?text=${encodedMessage}`, '_blank');
     setIsChatOpen(false);
     setMessage("");
   };

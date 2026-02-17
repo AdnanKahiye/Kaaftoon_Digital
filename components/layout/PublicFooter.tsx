@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function PublicFooter() {
   return (
-    <footer className="bg-[#D51116] text-gray-300">
+    <footer className="bg-[#FFECCD] text-black">
       <div className="mx-auto max-w-6xl px-4 py-16">
 
         {/* Top Grid */}
@@ -10,11 +10,11 @@ export default function PublicFooter() {
 
           {/* Brand */}
           <div className="md:col-span-2">
-            <h3 className="text-2xl font-extrabold text-white">
+            <h3 className="text-2xl font-extrabold text-[#D51116]">
               kafton<span className="text-[#F39220]">Digital</span>
             </h3>
 
-            <p className="mt-4 max-w-md text-sm text-[#FFECCD] leading-relaxed">
+            <p className="mt-4 max-w-md text-sm leading-relaxed">
               We provide professional ICT & digital solutions including
               video editing, graphic design, branding, web & application
               development, and social media management.
@@ -23,22 +23,22 @@ export default function PublicFooter() {
 
           {/* Company Links */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-white">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-[#D51116]">
               Company
             </h4>
             <ul className="mt-4 space-y-3 text-sm">
               <li>
-                <Link href="/services" className="hover:text-[#FFECCD] transition">
+                <Link href="/services" className="hover:text-[#F39220] transition">
                   Services
                 </Link>
               </li>
               <li>
-                <Link href="/portfolio" className="hover:text-[#FFECCD] transition">
+                <Link href="/portfolio" className="hover:text-[#F39220] transition">
                   Portfolio
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-[#FFECCD] transition">
+                <Link href="/contact" className="hover:text-[#F39220] transition">
                   Contact
                 </Link>
               </li>
@@ -47,20 +47,20 @@ export default function PublicFooter() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-white">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-[#D51116]">
               Contact
             </h4>
-            <ul className="mt-4 space-y-3 text-sm text-[#FFECCD]">
+            <ul className="mt-4 space-y-3 text-sm">
               <li>
-                <span className="text-white font-medium">Email:</span>{" "}
+                <span className="font-medium text-[#D51116]">Email:</span>{" "}
                 info@kaftondigital.com
               </li>
               <li>
-                <span className="text-white font-medium">Phone:</span>{" "}
+                <span className="font-medium text-[#D51116]">Phone:</span>{" "}
                 +252 XXX XXX XXX
               </li>
               <li>
-                <span className="text-white font-medium">Location:</span>{" "}
+                <span className="font-medium text-[#D51116]">Location:</span>{" "}
                 Somalia
               </li>
             </ul>
@@ -71,16 +71,16 @@ export default function PublicFooter() {
         <div className="mt-12 border-t border-[#F39220] pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
 
           {/* Copyright */}
-          <p className="text-sm text-[#FFECCD]">
+          <p className="text-sm">
             © {new Date().getFullYear()} Kafton Digital Solution. All rights reserved.
           </p>
 
           {/* Footer Links */}
           <div className="flex gap-6 text-sm">
-            <Link href="/privacy" className="hover:text-[#FFECCD] transition">
+            <Link href="/privacy" className="hover:text-[#F39220] transition">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-[#FFECCD] transition">
+            <Link href="/terms" className="hover:text-[#F39220] transition">
               Terms of Service
             </Link>
           </div>

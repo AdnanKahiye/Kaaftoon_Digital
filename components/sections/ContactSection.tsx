@@ -138,7 +138,7 @@ export default function ContactSection() {
                 </div>
                 <div>
                   <p className="font-semibold text-[#D51116]">Phone</p>
-                  <p className="text-sm text-gray-700">+252 61 XXX XXX</p>
+                  <p className="text-sm text-gray-700">+252 252612024843</p>
                 </div>
               </div>
 
@@ -152,7 +152,7 @@ export default function ContactSection() {
                 </div>
                 <div>
                   <p className="font-semibold text-[#D51116]">WhatsApp</p>
-                  <p className="text-sm text-gray-700">+252 61 XXX XXX</p>
+                  <p className="text-sm text-gray-700">+252 252612024843</p>
                 </div>
               </div>
             </div>

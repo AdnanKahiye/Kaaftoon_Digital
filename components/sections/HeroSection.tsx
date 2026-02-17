@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const backgrounds = [
-  "/Images/hero-bg-1.jpg",
-  "/Images/hero-bg-2.jpg",
+  "/Images/one.jpeg",
+  "/Images/one copy.jpeg",
 ];
 
 export default function HeroSection() {
@@ -59,7 +59,7 @@ export default function HeroSection() {
       <button
         onClick={prevBg}
         className="hidden md:flex absolute left-6 top-1/2 z-20 -translate-y-1/2
-        rounded-full bg-white/10 p-3 text-white backdrop-blur
+        rounded-full bg-[#F39220] p-3 text-white backdrop-blur
         hover:bg-[#F39220] transition"
         aria-label="Previous slide"
       >
@@ -69,7 +69,7 @@ export default function HeroSection() {
       <button
         onClick={nextBg}
         className="hidden md:flex absolute right-6 top-1/2 z-20 -translate-y-1/2
-        rounded-full bg-white/10 p-3 text-white backdrop-blur
+        rounded-full bg-[#F39220] p-3 text-white backdrop-blur
         hover:bg-[#F39220] transition"
         aria-label="Next slide"
       >
@@ -91,7 +91,7 @@ export default function HeroSection() {
           {/* Title */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] max-w-3xl text-white">
             Let’s Elevate Your <br />
-            <span className="text-[#D51116]">Digital Growth</span>
+            <span className="text-[#F39220]">Digital Growth</span>
           </h1>
 
           {/* Description */}
@@ -105,7 +105,7 @@ export default function HeroSection() {
           <div className="mt-10 flex flex-wrap gap-5 justify-center lg:justify-start">
             <Link
               href="/services"
-              className="rounded-full bg-[#D51116] px-9 py-3
+              className="rounded-full bg-[#F39220] px-9 py-3
               font-semibold text-white
               hover:bg-[#F39220] transition"
             >

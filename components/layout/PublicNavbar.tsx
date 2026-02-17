@@ -102,10 +102,10 @@ export default function PublicNavbar() {
             <NavLink href="/contact" pathname={pathname}>Contact Us</NavLink>
           </nav>
 
-          {/* LOGIN - DESKTOP */}
+          {/* LOGIN - DESKTOP  bg-[#F39220]*/}
           <Link
             href="/auth/login"
-            className="hidden lg:inline-flex rounded-full bg-[#D51116] px-6 py-3 text-white font-semibold hover:bg-[#F39220] transition"
+            className="hidden lg:inline-flex rounded-full bg-[#F39220] px-6 py-3 text-white font-semibold hover:bg-[#F39220] transition"
           >
             Login
           </Link>

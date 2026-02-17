@@ -6,21 +6,21 @@ const testimonials = [
     role: "Founder, Startup Company",
     message:
       "Working with this team was a game changer. They delivered a professional product that helped us compete confidently in the market.",
-    avatar: "/Images/testimonials/branding.jpg",
+    avatar: "/Images/picture.png",
   },
   {
     name: "Sarah Ali",
     role: "Marketing Manager",
     message:
       "Their design and development skills are outstanding. Communication was smooth, delivery was fast, and the quality exceeded expectations.",
-    avatar: "/Images/testimonials/branding.jpg",
+    avatar: "/Images/picture.png",
   },
   {
     name: "Mohamed Yusuf",
     role: "Business Owner",
     message:
       "From branding to software development, everything was handled professionally. I highly recommend their services.",
-    avatar: "/Images/testimonials/branding.jpg",
+    avatar: "/Images/picture.png",
   },
 ];
 

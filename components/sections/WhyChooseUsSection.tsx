@@ -95,18 +95,21 @@ export default function WhyChooseUsSection() {
           </div>
 
           {/* RIGHT SIDE (VISUAL PLACEHOLDER) */}
-          <div className="relative">
-            <div
-              className="h-[320px] w-full rounded-2xl
-              bg-gradient-to-br from-[#F39220]/30 to-white
-              shadow-lg"
-            />
-            <div
-              className="absolute -top-6 -right-6 h-20 w-20
-              rounded-full border border-dashed
-              border-[#D51116]/30 opacity-40"
-            />
-          </div>
+          {/* RIGHT SIDE CONTENT */}
+<div className="relative flex items-center justify-center h-[320px] w-full rounded-2xl bg-gradient-to-br from-[#F39220]/20 to-white shadow-lg p-8">
+  <div className="text-center max-w-sm">
+    <h3 className="text-xl font-bold text-[#D51116] mb-3">
+      Innovation That Drives Growth
+    </h3>
+    <p className="text-sm text-gray-700">
+      We combine strategy, creativity, and technology to deliver impactful 
+      digital solutions that accelerate business performance and long-term success.
+    </p>
+  </div>
+
+  <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full border border-dashed border-[#D51116]/30 opacity-40" />
+</div>
+
         </div>
       </div>
 
