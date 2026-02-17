@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import toast from "react-hot-toast";
 import {
   TrendingUp,
@@ -26,96 +28,86 @@ interface RecentSale {
 ========================= */
 
 export default function DashboardContent() {
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
 
+  /* =========================
+     STATE
+  ========================= */
+
+  const [loading, setLoading] = useState(false);
   const [totalSales, setTotalSales] = useState<number>(0);
   const [totalCustomers, setTotalCustomers] = useState<number>(0);
   const [totalUsers, setTotalUsers] = useState<number>(0);
   const [recentSales, setRecentSales] = useState<RecentSale[]>([]);
-
   const [filters, setFilters] = useState<{ fromDate?: string; toDate?: string }>({});
 
   /* =========================
-     FORMAT NUMBER (NO CURRENCY)
+     AUTH GUARD
   ========================= */
-  const formatNumber = (value: number) =>
-    new Intl.NumberFormat("en-US").format(value);
 
-  /* =========================
-     LOAD TOTAL SALES
-  ========================= */
-  async function loadTotalSales() {
-    try {
-      //const res = await SalesService.getTotalSales(filters);
-      //setTotalSales(res.data.data ?? 0);
-    } catch {
-      toast.error("Failed to load total sales");
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.replace("/auth/login");
     }
-  }
+  }, [authLoading, user, router]);
 
-  /* =========================
-     LOAD TOTAL CUSTOMERS
-  ========================= */
-  async function loadTotalCustomers() {
-    try {
-     // const res = await SalesService.getTotalCustomers(filters);
-      //setTotalCustomers(res.data.data ?? 0);
-    } catch {
-      toast.error("Failed to load total customers");
-    }
-  }
 
-  /* =========================
-     LOAD TOTAL USERS
-  ========================= */
-  async function loadTotalUsers() {
-    try {
-      //const res = await SalesService.getTotalUsers(filters);
-      //setTotalUsers(res.data.data ?? 0);
-    } catch {
-      toast.error("Failed to load total users");
-    }
-  }
 
-  /* =========================
-     LOAD RECENT SALES
-  ========================= */
-  async function loadRecentSales() {
-    try {
-     // const res = await SalesService.getRecentSales(5);
-      //setRecentSales(res.data.data ?? []);
-    } catch {
-      toast.error("Failed to load recent sales");
-    }
-  }
 
   /* =========================
      LOAD DASHBOARD
   ========================= */
-  async function loadDashboard() {
-    setLoading(true);
-    await Promise.all([
-      loadTotalSales(),
-      loadTotalCustomers(),
-      loadTotalUsers(),
-      loadRecentSales(),
-    ]);
-    setLoading(false);
-  }
 
   useEffect(() => {
+    if (!user) return;
+
+    const loadDashboard = async () => {
+      setLoading(true);
+      try {
+        // Example placeholder
+        // Replace with real API calls
+        setTotalSales(12000);
+        setTotalCustomers(150);
+        setTotalUsers(12);
+        setRecentSales([]);
+      } catch {
+        toast.error("Failed to load dashboard");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     loadDashboard();
-  }, [filters]);
+  }, [filters, user]);
+
+  /* =========================
+     FORMAT NUMBER
+  ========================= */
+
+  const formatNumber = (value: number) =>
+    new Intl.NumberFormat("en-US").format(value);
+
+  /* =========================
+     LOADING SCREEN
+  ========================= */
+
+  if (authLoading || !user) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-gray-500">
+        Loading...
+      </div>
+    );
+  }
 
   /* =========================
      RENDER
   ========================= */
+
   return (
     <div className="text-xl font-semibold">
 
-      {/* =========================
-          STAT CARDS
-      ========================= */}
+      {/* STAT CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
         <StatCard
@@ -152,10 +144,8 @@ export default function DashboardContent() {
 
       </div>
 
-      {/* =========================
-          RECENT SALES TABLE
-      ========================= */}
-      <div className="rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      {/* RECENT SALES TABLE */}
+      <div className="rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-8">
         <div className="p-6 flex justify-between items-center bg-white">
           <h2 className="text-sm font-semibold tracking-wide text-slate-500 uppercase">
             Recent Orders
@@ -203,8 +193,20 @@ export default function DashboardContent() {
    COMPONENTS
 ========================= */
 
-function StatCard({ title, value, subtitle, icon, accent }: any) {
-  const colors: any = {
+function StatCard({
+  title,
+  value,
+  subtitle,
+  icon,
+  accent,
+}: {
+  title: string;
+  value: string;
+  subtitle: string;
+  icon: React.ReactNode;
+  accent: "emerald" | "indigo" | "blue" | "amber";
+}) {
+  const colors = {
     emerald: "from-emerald-500 to-emerald-600",
     indigo: "from-indigo-500 to-indigo-600",
     blue: "from-blue-500 to-blue-600",
@@ -212,10 +214,12 @@ function StatCard({ title, value, subtitle, icon, accent }: any) {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-100 hover:-translate-y-1">
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
       <div className="flex items-center justify-between">
         <p className="text-sm font-medium text-slate-500">{title}</p>
-        <div className={`p-3 rounded-xl bg-gradient-to-br ${colors[accent]} text-white`}>
+        <div
+          className={`p-3 rounded-xl bg-gradient-to-br ${colors[accent]} text-white`}
+        >
           {icon}
         </div>
       </div>
@@ -228,10 +232,6 @@ function StatCard({ title, value, subtitle, icon, accent }: any) {
     </div>
   );
 }
-
-/* =========================
-   STATUS BADGE (GREEN CLOSED)
-========================= */
 
 function StatusBadge({ status }: { status: string }) {
   const base =
@@ -251,10 +251,6 @@ function StatusBadge({ status }: { status: string }) {
     </span>
   );
 }
-
-/* =========================
-   ORDER ROW
-========================= */
 
 function OrderRow({
   id,
