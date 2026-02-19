@@ -50,14 +50,13 @@ export default function CustomerSalesTable() {
 
   async function loadCustomers() {
     try {
-    const res = await CustomerService.getAllBySalesCustomer(
-  page,
-  pageSize,
-  filters.phoneNumber,
-  filters.startDate,
-  filters.endDate
-);
-
+      const res = await CustomerService.getAllBySalesCustomer(
+        page,
+        pageSize,
+        filters.phoneNumber,
+        filters.startDate,
+        filters.endDate
+      );
 
       if (res.data.success) {
         setCustomers(res.data.data?.data || []);
@@ -92,6 +91,12 @@ export default function CustomerSalesTable() {
     ]);
   }
 
+  function removeService(serviceItemId: string) {
+    setSelectedItems(prev =>
+      prev.filter(item => item.serviceItemId !== serviceItemId)
+    );
+  }
+
   const subTotal = selectedItems.reduce(
     (acc, item) => acc + item.price,
     0
@@ -99,7 +104,6 @@ export default function CustomerSalesTable() {
 
   const calculatedTotal = subTotal - discount;
 
-  // AUTO UPDATE paidAmount marka discount ama services isbadalaan
   useEffect(() => {
     setPaidAmount(calculatedTotal > 0 ? calculatedTotal : 0);
   }, [discount, subTotal]);
@@ -141,22 +145,21 @@ export default function CustomerSalesTable() {
   }
 
   return (
-    <div className="w-full rounded-lg bg-white">
+    <div className="w-full min-h-screen bg-gray-100 p-6 space-y-6">
 
       {/* HEADER */}
-      <div className="flex items-center justify-between px-6 py-4">
-        <h2 className="text-lg font-semibold">Customer Sales</h2>
+      <div className="flex items-center justify-between bg-white p-6 rounded-xl shadow-sm">
+        <h2 className="text-xl font-semibold text-gray-800">
+          Customer Sales
+        </h2>
 
-    <button
-  onClick={() => setFilterOpen(true)}
-  className="flex items-center gap-2 px-4 py-2 
-             bg-blue-600 text-white rounded-md 
-             hover:bg-blue-700 transition duration-200 
-             shadow-sm hover:shadow-md"
->
-  🔍 Filter
-</button>
-
+        <button
+          onClick={() => setFilterOpen(true)}
+          className="px-4 py-2 bg-indigo-600 text-white rounded-lg 
+                     hover:bg-indigo-700 transition shadow-sm"
+        >
+          Filter
+        </button>
       </div>
 
       {/* FILTER MODAL */}
@@ -175,111 +178,127 @@ export default function CustomerSalesTable() {
       />
 
       {/* CUSTOMER TABLE */}
-      <div className="w-full overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="bg-gray-50 text-xs uppercase">
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Name</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Email</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Phone</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Type</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Address</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Created At</th>
-
-            </tr>
-          </thead>
-
-          <tbody>
-            {customers.map((c) => (
-              <tr
-                key={c.id}
-                onClick={() => setSelectedCustomer(c)}
-                className={`cursor-pointer hover:bg-gray-50 
-                  ${selectedCustomer?.id === c.id ? "bg-yellow-200" : ""}
-                `}
-              >
-                <td className="px-4 py-3 text-sm font-medium">{c.fullName}</td>
-                <td className="px-4 py-3 text-sm font-medium">{c.email}</td>
-                <td className="px-4 py-3 text-sm font-medium">{c.phoneNumber}</td>
-                <td className="px-4 py-3 text-sm font-medium">{c.type}</td>
-                <td className="px-4 py-3 text-sm font-medium">{c.address}</td>
-                <td className="px-4 py-3 text-sm">
-  {new Date(c.createdAt).toISOString().split("T")[0]}
-</td>
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider">
+              <tr>
+                <th className="px-6 py-4 text-left">Name</th>
+                <th className="px-6 py-4 text-left">Email</th>
+                <th className="px-6 py-4 text-left">Phone</th>
+                <th className="px-6 py-4 text-left">Type</th>
+                <th className="px-6 py-4 text-left">Address</th>
+                <th className="px-6 py-4 text-left">Created</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
 
-      {/* PAGINATION */}
-      <div className="flex justify-end gap-2 px-6 py-4">
-        <button
-          onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-          className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
-        >
-          Prev
-        </button>
-
-        <span className="px-3 py-1 bg-blue-600 text-white rounded">
-          {page}
-        </span>
-
-        <button
-          onClick={() => setPage(prev => prev + 1)}
-          className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
-        >
-          Next
-        </button>
+            <tbody className="divide-y">
+              {customers.map((c) => (
+                <tr
+                  key={c.id}
+                  onClick={() => setSelectedCustomer(c)}
+                  className={`cursor-pointer transition-all duration-150
+                    ${selectedCustomer?.id === c.id
+                      ? "bg-indigo-50 border-l-4 border-indigo-600"
+                      : "hover:bg-gray-50"
+                    }`}
+                >
+                  <td className="px-6 py-4 font-medium text-gray-800">
+                    {c.fullName}
+                  </td>
+                  <td className="px-6 py-4 text-gray-600">
+                    {c.email}
+                  </td>
+                  <td className="px-6 py-4 text-gray-600">
+                    {c.phoneNumber}
+                  </td>
+                  <td className="px-6 py-4 text-gray-600">
+                    {c.type}
+                  </td>
+                  <td className="px-6 py-4 text-gray-600">
+                    {c.address}
+                  </td>
+                  <td className="px-6 py-4 text-gray-500">
+                    {new Date(c.createdAt).toISOString().split("T")[0]}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* SALES SECTION */}
-      <div className="grid grid-cols-2 gap-6 px-6 py-2">
+      <div className="grid md:grid-cols-2 gap-6">
 
         {/* LEFT */}
-        <div>
-          <h3 className="text-lg font-semibold mb-3">Select Service</h3>
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h3 className="text-lg font-semibold mb-4 text-gray-800">
+            Select Service
+          </h3>
 
-          <Input placeholder="Search service" className="h-10 w-full mb-3" />
+          <Input
+            placeholder="Search service"
+            className="h-10 w-full mb-4"
+          />
 
-          <div className="max-h-72 overflow-y-auto bg-gray-100 rounded">
+          <div className="max-h-72 overflow-y-auto border rounded-lg divide-y">
             {services.map((service) => (
               <div
                 key={service.id}
                 onClick={() => addService(service)}
-                className="px-4 py-3 hover:bg-gray-200 cursor-pointer px-4  text-sm font-medium"
+                className="flex justify-between items-center px-4 py-3 
+                           hover:bg-indigo-50 cursor-pointer transition"
               >
-                {service.name} - {service.possiblePrice}
+                <span className="text-gray-700 font-medium">
+                  {service.name}
+                </span>
+                <span className="text-indigo-600 font-semibold">
+                  {service.possiblePrice}
+                </span>
               </div>
             ))}
           </div>
         </div>
 
         {/* RIGHT */}
-        <div>
-          <h3 className="text-lg font-semibold">Service Details</h3>
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h3 className="text-lg font-semibold mb-4 text-gray-800">
+            Service Details
+          </h3>
 
-          <div className="bg-green-700 text-white grid grid-cols-3 px-4 py-2 text-sm font-medium">
+          <div className="grid grid-cols-4 bg-indigo-600 text-white px-4 py-2 rounded-t-lg text-sm font-medium">
             <div>Name</div>
             <div>Price</div>
             <div>Total</div>
+            <div className="text-right">Action</div>
           </div>
 
-          <div className="divide-y">
+          <div className="divide-y border border-t-0 rounded-b-lg">
             {selectedItems.map((item) => (
               <div
                 key={item.serviceItemId}
-                className="grid grid-cols-3 px-4 text-sm"
+                className="grid grid-cols-4 px-4 py-3 text-sm bg-gray-50 items-center"
               >
                 <div>{item.name}</div>
                 <div>{item.price}</div>
                 <div>{item.price}</div>
+                <div className="text-right">
+                  <button
+                    onClick={() => removeService(item.serviceItemId)}
+                    className="px-2 py-1 text-xs bg-red-100 text-red-600 
+                               rounded-md hover:bg-red-200 transition"
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-6 bg-gray-100 p-4 rounded space-y-3">
-            <div className="flex justify-between">
+          <div className="mt-6 bg-gray-50 p-4 rounded-lg space-y-4">
+
+            <div className="flex justify-between font-medium">
               <span>Sub Total</span>
               <span>{subTotal}</span>
             </div>
@@ -290,7 +309,7 @@ export default function CustomerSalesTable() {
                 type="number"
                 value={discount}
                 onChange={(e) => setDiscount(Number(e.target.value))}
-                className="w-32"
+                className="w-28"
               />
             </div>
 
@@ -300,20 +319,27 @@ export default function CustomerSalesTable() {
                 type="number"
                 value={paidAmount}
                 onChange={(e) => setPaidAmount(Number(e.target.value))}
-                className="w-32"
+                className="w-28"
               />
+            </div>
+
+            <div className="flex justify-between font-bold text-lg border-t pt-3">
+              <span>Total</span>
+              <span className="text-green-600">
+                {calculatedTotal}
+              </span>
             </div>
 
             <button
               onClick={handleCreateSale}
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="w-full py-3 bg-indigo-600 text-white 
+                         rounded-lg hover:bg-indigo-700 transition shadow-sm"
             >
               Create Sale
             </button>
 
           </div>
         </div>
-
       </div>
     </div>
   );

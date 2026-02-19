@@ -28,9 +28,6 @@ export default function CustomerTable() {
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  /* =========================
-     LOAD CUSTOMERS
-  ========================= */
   useEffect(() => {
     loadCustomers();
   }, []);
@@ -39,8 +36,6 @@ export default function CustomerTable() {
     setLoading(true);
     try {
       const res = await CustomerService.getAllCustomer();
-
-      console.log("API RESPONSE:", res.data);
 
       if (res.data.success) {
         const data = res.data.data;
@@ -64,9 +59,6 @@ export default function CustomerTable() {
     }
   }
 
-  /* =========================
-     ADD / UPDATE
-  ========================= */
   async function handleSubmit(data: CustomerFormData) {
     try {
       let res;
@@ -93,9 +85,6 @@ export default function CustomerTable() {
     }
   }
 
-  /* =========================
-     DELETE
-  ========================= */
   async function confirmDelete() {
     if (!selectedCustomer) return;
 
@@ -117,9 +106,6 @@ export default function CustomerTable() {
     }
   }
 
-  /* =========================
-     SAFE FILTER
-  ========================= */
   const filteredCustomers = Array.isArray(customers)
     ? customers.filter((c) =>
         c.fullName?.toLowerCase().includes(search.toLowerCase()) ||
@@ -130,128 +116,148 @@ export default function CustomerTable() {
     : [];
 
   return (
-    <div className="w-full rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-      
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-          Customers
-        </h2>
+    <div className="min-h-screen bg-gray-100 p-6">
 
-        <button
-          onClick={() => {
-            setMode("add");
-            setSelectedCustomer(null);
-            setOpenModal(true);
-          }}
-          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >
-          + Add New
-        </button>
-      </div>
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
 
-      {/* Search */}
-      <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-        <div className="w-72">
-          <Input
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="h-9 w-full text-sm"
-          />
+        {/* HEADER */}
+        <div className="flex items-center justify-between px-6 py-5 border-b bg-white">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Customers
+            </h2>
+            <p className="text-sm text-gray-500">
+              Manage customer records
+            </p>
+          </div>
+
+          <button
+            onClick={() => {
+              setMode("add");
+              setSelectedCustomer(null);
+              setOpenModal(true);
+            }}
+            className="px-5 py-2 bg-indigo-600 text-white rounded-xl 
+                       hover:bg-indigo-700 transition shadow-sm"
+          >
+            + Add New
+          </button>
         </div>
-      </div>
 
-      {/* Table */}
-      <div className="w-full overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800/50">
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                Name
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                Email
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                Phone
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                Type
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                Address
-              </th>
-              <th className="px-4 py-3 text-center text-xs font-medium uppercase text-gray-500">
-                Action
-              </th>
-            </tr>
-          </thead>
+        {/* SEARCH */}
+        <div className="px-6 py-4 border-b bg-gray-50">
+          <div className="w-80">
+            <Input
+              placeholder="Search customers..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="h-10 w-full text-sm"
+            />
+          </div>
+        </div>
 
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-            {loading && (
+        {/* TABLE */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider">
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-sm text-gray-500">
-                  Loading...
-                </td>
+                <th className="px-6 py-4 text-left">Name</th>
+                <th className="px-6 py-4 text-left">Email</th>
+                <th className="px-6 py-4 text-left">Phone</th>
+                <th className="px-6 py-4 text-left">Type</th>
+                <th className="px-6 py-4 text-left">Address</th>
+                <th className="px-6 py-4 text-center">Action</th>
               </tr>
-            )}
+            </thead>
 
-            {!loading && filteredCustomers.length === 0 && (
-              <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-sm text-gray-500">
-                  No customers found
-                </td>
-              </tr>
-            )}
+            <tbody className="divide-y">
 
-            {filteredCustomers.map((c) => (
-              <tr key={c.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                <td className="px-4 py-3 text-sm font-medium">{c.fullName}</td>
-                <td className="px-4 py-3 text-sm">{c.email}</td>
-                <td className="px-4 py-3 text-sm">{c.phoneNumber}</td>
-                <td className="px-4 py-3 text-sm">
-                  <span className="inline-flex rounded-full bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-                    {c.type}
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-sm">{c.address}</td>
+              {loading && (
+                <tr>
+                  <td colSpan={6} className="px-6 py-10 text-center text-gray-500">
+                    Loading customers...
+                  </td>
+                </tr>
+              )}
 
-                <td className="px-4 py-3 text-center text-sm">
-                  <div className="flex items-center justify-center gap-2">
-                    <button
-                      onClick={() => {
-                        setMode("edit");
-                        setSelectedCustomer(c);
-                        setOpenModal(true);
-                      }}
-                      className="rounded px-2 py-1 text-blue-600 hover:bg-blue-100"
-                    >
-                      Edit
-                    </button>
+              {!loading && filteredCustomers.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-6 py-10 text-center text-gray-400">
+                    No customers found
+                  </td>
+                </tr>
+              )}
 
-                    <button
-                      onClick={() => {
-                        setSelectedCustomer(c);
-                        setOpenDelete(true);
-                      }}
-                      className="rounded px-2 py-1 text-red-600 hover:bg-red-100"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+              {!loading &&
+                filteredCustomers.map((c) => (
+                  <tr
+                    key={c.id}
+                    className="hover:bg-gray-50 transition"
+                  >
+                    <td className="px-6 py-4 font-medium text-gray-800">
+                      {c.fullName}
+                    </td>
 
-      {/* Footer */}
-      <div className="border-t border-gray-200 px-6 py-3 dark:border-gray-700">
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          Showing {filteredCustomers.length} of {customers.length} entries
-        </p>
+                    <td className="px-6 py-4 text-gray-600">
+                      {c.email}
+                    </td>
+
+                    <td className="px-6 py-4 text-gray-600">
+                      {c.phoneNumber}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <span className="inline-flex rounded-full bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-700">
+                        {c.type}
+                      </span>
+                    </td>
+
+                    <td className="px-6 py-4 text-gray-600">
+                      {c.address}
+                    </td>
+
+                    <td className="px-6 py-4 text-center">
+                      <div className="flex items-center justify-center gap-3">
+
+                        <button
+                          onClick={() => {
+                            setMode("edit");
+                            setSelectedCustomer(c);
+                            setOpenModal(true);
+                          }}
+                          className="px-3 py-1 rounded-lg text-indigo-600 
+                                     hover:bg-indigo-50 transition font-medium"
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setSelectedCustomer(c);
+                            setOpenDelete(true);
+                          }}
+                          className="px-3 py-1 rounded-lg text-red-600 
+                                     hover:bg-red-50 transition font-medium"
+                        >
+                          Delete
+                        </button>
+
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+
+            </tbody>
+          </table>
+        </div>
+
+        {/* FOOTER */}
+        <div className="px-6 py-4 border-t bg-gray-50">
+          <p className="text-sm text-gray-500">
+            Showing {filteredCustomers.length} of {customers.length} entries
+          </p>
+        </div>
+
       </div>
 
       <CustomerFormModal

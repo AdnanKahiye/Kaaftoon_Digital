@@ -73,116 +73,164 @@ export default function SalesTable() {
   }
 
   return (
-    <div className="w-full rounded-lg border border-gray-200 bg-white">
+    <div className="min-h-screen bg-gray-100 p-6">
 
-      {/* HEADER */}
-      <div className="flex items-center justify-between px-6 py-4">
-        <h2 className="text-lg font-semibold">
-          Sales List
-        </h2>
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
 
-        <button
-          onClick={() => setFilterOpen(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          Filter
-        </button>
-      </div>
+        {/* HEADER */}
+        <div className="flex items-center justify-between px-6 py-5 border-b bg-white">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Sales List
+            </h2>
+            <p className="text-sm text-gray-500">
+              View and manage sales transactions
+            </p>
+          </div>
 
-      {/* TABLE */}
-      <div className="w-full overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200 bg-gray-50 text-xs uppercase">
-              <th className="px-4 py-3 text-left">Customer</th>
-              <th className="px-4 py-3 text-left">SubTotal</th>
-              <th className="px-4 py-3 text-left">Discount</th>
-              <th className="px-4 py-3 text-left">Total</th>
-              <th className="px-4 py-3 text-left">Paid</th>
-              <th className="px-4 py-3 text-left">Balance</th>
-              <th className="px-4 py-3 text-left">Status</th>
-              <th className="px-4 py-3 text-center">Action</th>
-            </tr>
-          </thead>
+          <button
+            onClick={() => setFilterOpen(true)}
+            className="px-5 py-2 bg-indigo-600 text-white rounded-xl 
+                       hover:bg-indigo-700 transition shadow-sm"
+          >
+            Filter
+          </button>
+        </div>
 
-          <tbody className="divide-y divide-gray-200">
-            {loading && (
+        {/* TABLE */}
+        <div className="w-full overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider">
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center">
-                  Loading...
-                </td>
+                <th className="px-6 py-4 text-left">Customer</th>
+                <th className="px-6 py-4 text-left">SubTotal</th>
+                <th className="px-6 py-4 text-left">Discount</th>
+                <th className="px-6 py-4 text-left">Total</th>
+                <th className="px-6 py-4 text-left">Paid</th>
+                <th className="px-6 py-4 text-left">Balance</th>
+                <th className="px-6 py-4 text-left">Status</th>
+                <th className="px-6 py-4 text-center">Action</th>
               </tr>
-            )}
+            </thead>
 
-            {!loading && sales.map((sale) => (
-              <tr key={sale.saleId} className="hover:bg-gray-50">
-                <td className="px-4 py-3">{sale.customerName}</td>
-                <td className="px-4 py-3">{sale.subTotal}</td>
-                <td className="px-4 py-3">{sale.discount}</td>
-                <td className="px-4 py-3">{sale.totalAmount}</td>
-                <td className="px-4 py-3">{sale.paidAmount}</td>
-                <td className="px-4 py-3">{sale.balance}</td>
-                <td className="px-4 py-3">
-                  <span
-                    className={`px-2 py-1 rounded text-xs ${
-                      sale.status === "Completed"
-                        ? "bg-green-100 text-green-700"
-                        : sale.status === "Partial"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
-                  >
-                    {sale.status}
-                  </span>
-                </td>
+            <tbody className="divide-y">
 
-                <td className="px-4 py-3 text-center">
-                  <button
-                    onClick={() => setSelectedSale(sale)}
-                    className="rounded px-3 py-1 text-blue-600 hover:bg-blue-100"
-                  >
-                    Detail
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              {loading && (
+                <tr>
+                  <td colSpan={8} className="px-6 py-10 text-center text-gray-500">
+                    Loading sales...
+                  </td>
+                </tr>
+              )}
+
+              {!loading && sales.length === 0 && (
+                <tr>
+                  <td colSpan={8} className="px-6 py-10 text-center text-gray-400">
+                    No sales found
+                  </td>
+                </tr>
+              )}
+
+              {!loading && sales.map((sale) => (
+                <tr
+                  key={sale.saleId}
+                  className="hover:bg-gray-50 transition"
+                >
+                  <td className="px-6 py-4 font-medium text-gray-800">
+                    {sale.customerName}
+                  </td>
+
+                  <td className="px-6 py-4 text-gray-600">
+                    {sale.subTotal}
+                  </td>
+
+                  <td className="px-6 py-4 text-gray-600">
+                    {sale.discount}
+                  </td>
+
+                  <td className="px-6 py-4 font-semibold text-gray-800">
+                    {sale.totalAmount}
+                  </td>
+
+                  <td className="px-6 py-4 text-green-600 font-medium">
+                    {sale.paidAmount}
+                  </td>
+
+                  <td className="px-6 py-4 text-red-500 font-medium">
+                    {sale.balance}
+                  </td>
+
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        sale.status === "Completed"
+                          ? "bg-green-100 text-green-700"
+                          : sale.status === "Partial"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      {sale.status}
+                    </span>
+                  </td>
+
+                  <td className="px-6 py-4 text-center">
+                    <button
+                      onClick={() => setSelectedSale(sale)}
+                      className="px-4 py-1.5 rounded-lg text-indigo-600 
+                                 hover:bg-indigo-50 transition font-medium"
+                    >
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))}
+
+            </tbody>
+          </table>
+        </div>
+
+        {/* PAGINATION */}
+        <div className="flex items-center justify-between px-6 py-5 border-t bg-gray-50">
+
+          <span className="text-sm text-gray-500">
+            Page {pageNumber} of {totalPages}
+          </span>
+
+          <div className="flex items-center gap-3">
+
+            <button
+              disabled={pageNumber === 1}
+              onClick={() => setPageNumber((prev) => prev - 1)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                pageNumber === 1
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-white border hover:bg-gray-100"
+              }`}
+            >
+              Prev
+            </button>
+
+            <button className="px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white">
+              {pageNumber}
+            </button>
+
+            <button
+              disabled={pageNumber >= totalPages}
+              onClick={() => setPageNumber((prev) => prev + 1)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                pageNumber >= totalPages
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-white border hover:bg-gray-100"
+              }`}
+            >
+              Next
+            </button>
+
+          </div>
+        </div>
+
       </div>
-
-    {/* PAGINATION */}
-<div className="flex items-center justify-end gap-3 py-6 px-6">
-
-  <button
-    disabled={pageNumber === 1}
-    onClick={() => setPageNumber((prev) => prev - 1)}
-    className={`px-4 py-2 rounded-md text-sm font-medium transition
-      ${pageNumber === 1
-        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-        : "bg-gray-200 text-gray-700 hover:bg-gray-300"}
-    `}
-  >
-    Prev
-  </button>
-
-  <button className="px-4 py-2 rounded-md text-sm font-medium bg-blue-600 text-white">
-    {pageNumber}
-  </button>
-
-  <button
-    disabled={pageNumber >= totalPages}
-    onClick={() => setPageNumber((prev) => prev + 1)}
-    className={`px-4 py-2 rounded-md text-sm font-medium transition
-      ${pageNumber >= totalPages
-        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-        : "bg-gray-200 text-gray-700 hover:bg-gray-300"}
-    `}
-  >
-    Next
-  </button>
-
-</div>
-
 
       {/* DETAIL MODAL */}
       {selectedSale && (

@@ -113,124 +113,140 @@ export default function ExpensesTable() {
   );
 
   return (
-    <div className="w-full rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-      
-      <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-          Expenses
-        </h2>
+    <div className="min-h-screen bg-gray-100 p-6">
 
-        <button
-          onClick={() => {
-            setMode("add");
-            setSelectedExpense(null);
-            setOpenModal(true);
-          }}
-          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >
-          + Add New
-        </button>
-      </div>
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
 
-      <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-        <div className="w-72">
-          <Input
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="h-9 w-full text-sm"
-          />
+        {/* HEADER */}
+        <div className="flex items-center justify-between px-6 py-5 border-b bg-white">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Expenses
+            </h2>
+            <p className="text-sm text-gray-500">
+              Manage expense records
+            </p>
+          </div>
+
+          <button
+            onClick={() => {
+              setMode("add");
+              setSelectedExpense(null);
+              setOpenModal(true);
+            }}
+            className="px-5 py-2 bg-indigo-600 text-white rounded-xl 
+                       hover:bg-indigo-700 transition shadow-sm"
+          >
+            + Add New
+          </button>
         </div>
-      </div>
 
-      <div className="w-full overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800/50">
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                Category
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                Amount
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                Remark
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                Created At
-              </th>
-              <th className="px-4 py-3 text-center text-xs font-medium uppercase text-gray-500">
-                Action
-              </th>
-            </tr>
-          </thead>
+        {/* SEARCH */}
+        <div className="px-6 py-4 border-b bg-gray-50">
+          <div className="w-80">
+            <Input
+              placeholder="Search expenses..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="h-10 w-full text-sm"
+            />
+          </div>
+        </div>
 
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-            {loading && (
+        {/* TABLE */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider">
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-sm text-gray-500">
-                  Loading...
-                </td>
+                <th className="px-6 py-4 text-left">Category</th>
+                <th className="px-6 py-4 text-left">Amount</th>
+                <th className="px-6 py-4 text-left">Remark</th>
+                <th className="px-6 py-4 text-left">Created At</th>
+                <th className="px-6 py-4 text-center">Action</th>
               </tr>
-            )}
+            </thead>
 
-            {!loading && filteredExpenses.length === 0 && (
-              <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-sm text-gray-500">
-                  No expenses found
-                </td>
-              </tr>
-            )}
+            <tbody className="divide-y">
 
-            {filteredExpenses.map((e) => (
-              <tr key={e.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                <td className="px-4 py-3 text-sm font-medium">
-                  {e.categoryName}
-                </td>
-                <td className="px-4 py-3 text-sm">
-                  {e.amount}
-                </td>
-                <td className="px-4 py-3 text-sm">
-                  {e.remark}
-                </td>
-                <td className="px-4 py-3 text-sm">
-                  {new Date(e.createdAt).toLocaleDateString()}
-                </td>
+              {loading && (
+                <tr>
+                  <td colSpan={5} className="px-6 py-10 text-center text-gray-500">
+                    Loading expenses...
+                  </td>
+                </tr>
+              )}
 
-                <td className="px-4 py-3 text-center text-sm">
-                  <div className="flex items-center justify-center gap-2">
-                    <button
-                      onClick={() => {
-                        setMode("edit");
-                        setSelectedExpense(e);
-                        setOpenModal(true);
-                      }}
-                      className="rounded px-2 py-1 text-blue-600 hover:bg-blue-100"
-                    >
-                      Edit
-                    </button>
+              {!loading && filteredExpenses.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="px-6 py-10 text-center text-gray-400">
+                    No expenses found
+                  </td>
+                </tr>
+              )}
 
-                    <button
-                      onClick={() => {
-                        setSelectedExpense(e);
-                        setOpenDelete(true);
-                      }}
-                      className="rounded px-2 py-1 text-red-600 hover:bg-red-100"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+              {!loading &&
+                filteredExpenses.map((e) => (
+                  <tr key={e.id} className="hover:bg-gray-50 transition">
 
-      <div className="border-t border-gray-200 px-6 py-3 dark:border-gray-700">
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          Showing {filteredExpenses.length} of {expenses.length} entries
-        </p>
+                    <td className="px-6 py-4 font-medium text-gray-800">
+                      {e.categoryName}
+                    </td>
+
+                    <td className="px-6 py-4 font-semibold text-red-600">
+                      {e.amount}
+                    </td>
+
+                    <td className="px-6 py-4 text-gray-600">
+                      {e.remark}
+                    </td>
+
+                    <td className="px-6 py-4 text-gray-500">
+                      {new Date(e.createdAt).toLocaleDateString()}
+                    </td>
+
+                    <td className="px-6 py-4 text-center">
+                      <div className="flex items-center justify-center gap-3">
+
+                        <button
+                          onClick={() => {
+                            setMode("edit");
+                            setSelectedExpense(e);
+                            setOpenModal(true);
+                          }}
+                          className="px-3 py-1 rounded-lg text-indigo-600 
+                                     hover:bg-indigo-50 transition font-medium"
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setSelectedExpense(e);
+                            setOpenDelete(true);
+                          }}
+                          className="px-3 py-1 rounded-lg text-red-600 
+                                     hover:bg-red-50 transition font-medium"
+                        >
+                          Delete
+                        </button>
+
+                      </div>
+                    </td>
+
+                  </tr>
+                ))}
+
+            </tbody>
+          </table>
+        </div>
+
+        {/* FOOTER */}
+        <div className="px-6 py-4 border-t bg-gray-50">
+          <p className="text-sm text-gray-500">
+            Showing {filteredExpenses.length} of {expenses.length} entries
+          </p>
+        </div>
+
       </div>
 
       <ExpensesFormModal
