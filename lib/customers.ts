@@ -196,5 +196,11 @@ getAUnpaidSales(
     return api.delete(`/Customer/delete-expenses/${id}`);
   },
 
+     getExpensesSummary(filters?: any) {
+  return api.post("Customer/expense-breakdown", null, {
+    params: filters,
+  });
+},
+
 
 };

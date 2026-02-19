@@ -72,6 +72,7 @@ const MENU_ITEMS = [
     roles: ["Administrator" ,"Manager"] as Role[],
     children: [{ title: "Payments", href: "/dashboard/unpaid" },
       { title: "Expenses", href: "/dashboard/Expenses" },
+      { title: "Expenses Summary", href: "/dashboard/Summary" },
 
 
     ],
