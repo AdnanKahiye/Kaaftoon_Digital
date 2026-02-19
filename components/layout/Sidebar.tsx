@@ -32,14 +32,16 @@ const MENU_ITEMS = [
     roles: ["Administrator", "Manager", "Employee", "User"] as Role[],
   },
   {
-    key: "settings",
-    title: "Settings",
+    key: "Registration",
+    title: "Registration",
     icon: Settings,
     roles: ["Administrator","Manager"] as Role[],
     children: [
       { title: "Users", href: "/dashboard/users" },
-      { title: "Category", href: "/dashboard/Services" },
+      { title: "Category Service", href: "/dashboard/Services" },
+
       { title: "Services", href: "/dashboard/Item" },
+      { title: "Expenses Category", href: "/dashboard/Category" },
     ],
   },
   {
@@ -53,8 +55,8 @@ const MENU_ITEMS = [
     ],
   },
   {
-    key: "customers",
-    title: "Customers",
+    key: "Sales",
+    title: "Sales",
     icon: Package,
     roles: ["Administrator", "Manager"] as Role[],
     children: [
@@ -68,7 +70,12 @@ const MENU_ITEMS = [
     title: "Billing",
     icon: CreditCard,
     roles: ["Administrator" ,"Manager"] as Role[],
-    children: [{ title: "Payments", href: "/dashboard/unpaid" }],
+    children: [{ title: "Payments", href: "/dashboard/unpaid" },
+      { title: "Expenses", href: "/dashboard/Expenses" },
+
+
+    ],
+    
   },
 ];
 

@@ -152,4 +152,49 @@ getAUnpaidSales(
 },
 
 
+  // GET ALL (with pagination)
+  getAllExpensesCategories(pageNumber = 1, pageSize = 10) {
+    return api.get("/Customer/get-expenses-category", {
+      params: { pageNumber, pageSize },
+    });
+  },
+
+   // CREATE
+  createExpensesCategory(data: any) {
+    return api.post("/Customer/create-expenses-category", data);
+  },
+
+      // UPDATE
+  updateExpensesCategory(id: string, data: any) {
+    return api.put(`/Customer/update-expenses-category/${id}`, data);
+  },
+
+      // DELETE
+  deleteExpensesCategory(id: string) {
+    return api.delete(`/Customer/delete-expenses-category/${id}`);
+  },
+
+
+    // GET ALL (with pagination)
+  getAllExpenses(pageNumber = 1, pageSize = 10) {
+    return api.get("/Customer/get-expenses", {
+      params: { pageNumber, pageSize },
+    });
+  },
+     // CREATE
+  createExpenses(data: any) {
+    return api.post("/Customer/create-expenses", data);
+  },
+
+        // UPDATE
+  updateExpenses(id: string, data: any) {
+    return api.put(`/Customer/update-expenses/${id}`, data);
+  },
+
+        // DELETE
+  deleteExpenses(id: string) {
+    return api.delete(`/Customer/delete-expenses/${id}`);
+  },
+
+
 };
