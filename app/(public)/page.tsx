@@ -9,10 +9,12 @@ import ContactSection from "@/components/sections/ContactSection";
 
 export default function HomePage() {
   return (
-    <>
+    <main>
       {/* HERO */}
       <HeroSection />
 
+      {/* WHITE SPACE SEPARATOR */}
+      <section className="h-12 md:h-12 bg-white"></section>
 
       {/* SERVICES */}
       <ServicesSection />
@@ -22,6 +24,6 @@ export default function HomePage() {
       <TestimonialsSection />
       <FAQSection />
       <ContactSection />
-    </>
+    </main>
   );
 }

@@ -146,7 +146,7 @@ function PackageFormContent() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#D51116] focus:ring-2 focus:ring-[#D51116]/20 outline-none transition"
-                    placeholder="John Doe"
+                    placeholder="Your full name"
                   />
                 </div>
 
@@ -166,7 +166,7 @@ function PackageFormContent() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#D51116] focus:ring-2 focus:ring-[#D51116]/20 outline-none transition"
-                    placeholder="john@example.com"
+                    placeholder=" Your email address"
                   />
                 </div>
 
@@ -181,7 +181,7 @@ function PackageFormContent() {
                   <input
                     type="tel"
                     id="phone"
-                    name="phone"
+                    name="Your phone number"
                     value={formData.phone}
                     onChange={handleChange}
                     required
@@ -206,7 +206,7 @@ function PackageFormContent() {
                   onChange={handleChange}
                   rows={4}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#D51116] focus:ring-2 focus:ring-[#D51116]/20 outline-none transition"
-                  placeholder="Tell us about your project requirements, timeline, budget, or any specific needs..."
+                  placeholder="Please provide any additional details or specific requirements you have for this package."
                 />
               </div>
 

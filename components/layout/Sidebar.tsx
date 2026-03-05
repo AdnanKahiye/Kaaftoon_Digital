@@ -12,7 +12,6 @@ import {
   ChevronDown,
   Menu,
   X,
-  Search,
 } from "lucide-react";
 
 type Role = "Administrator" | "Manager" | "Employee" | "User";
@@ -35,11 +34,10 @@ const MENU_ITEMS = [
     key: "Registration",
     title: "Registration",
     icon: Settings,
-    roles: ["Administrator","Manager"] as Role[],
+    roles: ["Administrator", "Manager"] as Role[],
     children: [
       { title: "Users", href: "/dashboard/users" },
       { title: "Category Service", href: "/dashboard/Services" },
-
       { title: "Services", href: "/dashboard/Item" },
       { title: "Expenses Category", href: "/dashboard/Category" },
     ],
@@ -62,21 +60,19 @@ const MENU_ITEMS = [
     children: [
       { title: "All Customers", href: "/dashboard/Customer" },
       { title: "Sales Customers", href: "/dashboard/Sales" },
-       { title: "Sales List", href: "/dashboard/Sale" },
+      { title: "Sales List", href: "/dashboard/Sale" },
     ],
   },
   {
     key: "billing",
     title: "Billing",
     icon: CreditCard,
-    roles: ["Administrator" ,"Manager"] as Role[],
-    children: [{ title: "Payments", href: "/dashboard/unpaid" },
+    roles: ["Administrator", "Manager"] as Role[],
+    children: [
+      { title: "Payments", href: "/dashboard/unpaid" },
       { title: "Expenses", href: "/dashboard/Expenses" },
       { title: "Expenses Summary", href: "/dashboard/Summary" },
-
-
     ],
-    
   },
 ];
 
@@ -94,14 +90,12 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
   /* ===== Auto open active section ===== */
 
   useEffect(() => {
-    const activeSection = MENU_ITEMS.find(item =>
-      item.children?.some(child =>
-        pathname.startsWith(child.href)
-      )
+    const activeSection = MENU_ITEMS.find((item) =>
+      item.children?.some((child) => pathname.startsWith(child.href))
     );
 
     if (activeSection) {
-      setOpen(prev => ({
+      setOpen((prev) => ({
         ...prev,
         [activeSection.key]: true,
       }));
@@ -110,7 +104,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
 
   /* ===== Filter by role ===== */
 
-  const allowedMenus = MENU_ITEMS.filter(item =>
+  const allowedMenus = MENU_ITEMS.filter((item) =>
     role ? item.roles.includes(role) : false
   );
 
@@ -125,16 +119,10 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
     }
   }, [onCollapse]);
 
-  useEffect(() => {
-    setIsMobileOpen(false);
-  }, [pathname]);
-
-  /* ===== Toggle section ===== */
-
   const toggle = (key: string) => {
     if (isCollapsed) return;
 
-    setOpen(prev => ({
+    setOpen((prev) => ({
       ...prev,
       [key]: !prev[key],
     }));
@@ -150,14 +138,19 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href + "/");
 
-  const nestedClass = (active: boolean) =>
-    `flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition-all duration-200
-    ${active ? "text-white" : "text-gray-400 hover:bg-gray-800/60 hover:text-white"}`;
-
   /* ================= RENDER ================= */
 
   return (
     <>
+      {/* MOBILE MENU BUTTON */}
+      <button
+        onClick={() => setIsMobileOpen(true)}
+        className="fixed top-4 left-4 z-50 md:hidden bg-gray-900 text-white p-2 rounded-lg"
+      >
+        <Menu size={20} />
+      </button>
+
+      {/* OVERLAY */}
       {isMobileOpen && (
         <div
           className="fixed inset-0 z-30 bg-black/50 md:hidden"
@@ -172,9 +165,11 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
         ${isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         ${isCollapsed ? "w-20" : "w-56"}`}
       >
-        {/* Header */}
-        <div className={`flex h-16 items-center border-b border-gray-800
-          ${isCollapsed ? "justify-center" : "justify-between px-4"}`}>
+        {/* HEADER */}
+        <div
+          className={`flex h-16 items-center border-b border-gray-800
+          ${isCollapsed ? "justify-center" : "justify-between px-4"}`}
+        >
           {!isCollapsed ? (
             <>
               <div className="flex items-center gap-2">
@@ -183,9 +178,20 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
                 </div>
                 <span className="text-white font-semibold">System</span>
               </div>
-              <button onClick={toggleCollapse}>
-                <Menu size={18} className="text-gray-400" />
-              </button>
+
+              <div className="flex items-center gap-2">
+                <button onClick={toggleCollapse}>
+                  <Menu size={18} className="text-gray-400" />
+                </button>
+
+                {/* CLOSE BUTTON MOBILE */}
+                <button
+                  className="md:hidden"
+                  onClick={() => setIsMobileOpen(false)}
+                >
+                  <X size={18} className="text-gray-400" />
+                </button>
+              </div>
             </>
           ) : (
             <button onClick={toggleCollapse}>
@@ -194,9 +200,9 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
           )}
         </div>
 
-        {/* Navigation */}
+        {/* NAVIGATION */}
         <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-2">
-          {allowedMenus.map(item => {
+          {allowedMenus.map((item) => {
             const Icon = item.icon;
 
             if (!item.children) {
@@ -205,9 +211,11 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
                   key={item.key}
                   href={item.href!}
                   className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition
-                  ${isActive(item.href!)
-                    ? "bg-indigo-600 text-white"
-                    : "text-gray-400 hover:bg-gray-800 hover:text-white"}`}
+                  ${
+                    isActive(item.href!)
+                      ? "bg-indigo-600 text-white"
+                      : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                  }`}
                 >
                   <Icon size={18} />
                   {!isCollapsed && <span>{item.title}</span>}
@@ -225,6 +233,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
                     <Icon size={18} />
                     {!isCollapsed && <span>{item.title}</span>}
                   </div>
+
                   {!isCollapsed && (
                     <ChevronDown
                       size={16}
@@ -234,19 +243,25 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
                   )}
                 </button>
 
-                {/* Smooth animation */}
                 <div
-                  className={`overflow-hidden transition-all duration-300 ease-in-out
-                  ${open[item.key] && !isCollapsed
-                    ? "max-h-96 opacity-100"
-                    : "max-h-0 opacity-0"}`}
+                  className={`overflow-hidden transition-all duration-300
+                  ${
+                    open[item.key] && !isCollapsed
+                      ? "max-h-96 opacity-100"
+                      : "max-h-0 opacity-0"
+                  }`}
                 >
                   <div className="ml-4 space-y-1 py-1">
-                    {item.children.map(child => (
+                    {item.children.map((child) => (
                       <Link
                         key={child.href}
                         href={child.href}
-                        className={nestedClass(isActive(child.href))}
+                        className={`block rounded-lg px-4 py-2 text-sm
+                        ${
+                          isActive(child.href)
+                            ? "text-white"
+                            : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                        }`}
                       >
                         {!isCollapsed && child.title}
                       </Link>
