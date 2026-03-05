@@ -98,7 +98,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-indigo-600 py-2 text-white font-semibold hover:bg-indigo-700 transition disabled:opacity-50"
+            className="w-full rounded-lg bg-[#F39220] py-2 text-white font-semibold hover:bg-[#F39220] transition disabled:opacity-50"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
