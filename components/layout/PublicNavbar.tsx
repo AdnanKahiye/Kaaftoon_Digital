@@ -55,7 +55,7 @@ export default function PublicNavbar() {
       </div>
 
       {/* ================= MAIN NAVBAR ================= */}
-      <header className="fixed top-[40px] left-0 right-0 z-40 bg-white shadow">
+      <header className="fixed top-[36px] left-0 right-0 z-40 bg-white shadow">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
           {/* LOGO */}
           <Link href="/" className="text-3xl font-extrabold">
