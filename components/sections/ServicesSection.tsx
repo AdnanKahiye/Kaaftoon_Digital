@@ -89,7 +89,7 @@ export default function ServicesPackagesSection() {
                 {/* CARD HEADER */}
                 <div className="text-center">
                   <h3 className="text-xl font-bold text-[#D51116]">{pkg.name}</h3>
-                  <div className="mt-3 text-4xl font-extrabold text-gray-900">{pkg.price}</div>
+                  <div className="mt-3 text-4xl font-extrabold text-gray-900">${pkg.price}</div>
                   <p className="mt-1 text-sm text-gray-500">package per month</p>
                 </div>
 

@@ -25,7 +25,7 @@ export default function PublicNavbar() {
             </a>
             <a href="tel:+252610000000" className="flex items-center gap-2 hover:text-[#FFECCD] transition">
               <Phone className="h-4 w-4 text-[#FFECCD]" />
-              +252 61 xxx xxxx
+              +252 252612024843
             </a>
           </div>
 
