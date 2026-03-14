@@ -6,6 +6,8 @@ import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import CTASection from "@/components/sections/CTASection";
 import FAQSection from "@/components/sections/FAQSection";
 import ContactSection from "@/components/sections/ContactSection";
+import ServiceSection from "@/components/sections/ServiceSection";
+
 
 export default function HomePage() {
   return (
@@ -17,10 +19,13 @@ export default function HomePage() {
       <section className="h-12 md:h-12 bg-white"></section>
 
       {/* SERVICES */}
-      <ServicesSection />
+
+       <ServiceSection />
+     
 
       {/* OTHER SECTIONS */}
       <WhyChooseUsSection />
+       <ServicesSection />
       <TestimonialsSection />
       <FAQSection />
       <ContactSection />

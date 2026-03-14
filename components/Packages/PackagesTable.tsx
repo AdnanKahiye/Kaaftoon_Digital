@@ -28,10 +28,10 @@ interface PackageDto {
    Kaalmeeyayaal
 ========================= */
 const normalizeType = (value: string): PackageType => {
-  if (value === "Marketing" || value === "Software" || value === "Creative") {
+  if (value === "Digital Marketing" || value === "Branding & Identity" ) {
     return value;
   }
-  return "Marketing";
+  return "Digital Marketing";
 };
 
 /* =========================

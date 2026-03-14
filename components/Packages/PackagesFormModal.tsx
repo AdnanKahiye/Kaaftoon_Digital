@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 // =========================
 // Types
 // =========================
-export type PackageType = "Marketing" | "Software" | "Creative";
+export type PackageType = "Digital Marketing" | "Branding & Identity" ;
 
 export interface PackageFormData {
   name: string;
@@ -33,7 +33,7 @@ const emptyForm: PackageFormData = {
   name: "",
   description: "",
   price: 0,
-  type: "Marketing",
+  type: "Digital Marketing",
   features: [],
 };
 
@@ -147,9 +147,8 @@ export default function PackageFormModal({
                 update("type", e.target.value as PackageType)
               }
             >
-              <option value="Marketing">Marketing</option>
-              <option value="Software">Software</option>
-              <option value="Creative">Creative</option>
+              <option value="Digital Marketing">Digital Marketing</option>
+              <option value="Branding & Identity">Branding & Identity</option>
             </select>
           </Field>
 

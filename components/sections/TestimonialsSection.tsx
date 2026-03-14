@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { Quote, Star } from "lucide-react";
 
 const testimonials = [
   {
@@ -26,46 +29,57 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section className="py-16">
+    <section className="py-4 bg-gray-50/50">
       <div className="mx-auto max-w-6xl px-4">
-
+        
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto">
+        <div className="text-center max-w-2xl mx-auto mb-16">
           <span
             className="inline-block mb-3 rounded-full
-            bg-white px-4 py-1 text-xs font-semibold
-            text-[#D51116] uppercase"
+            bg-[#FFECCD] px-4 py-1 text-xs font-bold
+            text-[#D51116] uppercase tracking-widest shadow-sm"
           >
             Testimonials
           </span>
 
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[#D51116]">
-            What Our Clients Say
+          <h2 className="text-4xl md:text-5xl font-black text-[#D51116] leading-tight">
+            Trusted by Industry <span className="text-[#F39220]">Leaders</span>
           </h2>
 
-          <p className="mt-4 text-gray-700">
-            Trusted by businesses and entrepreneurs who value quality,
-            performance, and results.
+          <p className="mt-4 text-gray-600 text-lg">
+            We value quality, performance, and results. Here is what our partners have to say about our collaboration.
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((item) => (
             <div
               key={item.name}
-              className="rounded-2xl bg-white p-6 shadow
-              border border-[#F39220]/30
-              hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
+              className="group relative rounded-3xl bg-white p-8 shadow-sm
+              border border-gray-100 transition-all duration-500
+              hover:-translate-y-2 hover:shadow-2xl hover:border-[#F39220]/40"
             >
-              <p className="text-gray-700 text-sm leading-relaxed">
+              {/* Decorative Quote Icon */}
+              <div className="absolute top-6 right-8 text-gray-100 group-hover:text-[#F39220]/10 transition-colors">
+                <Quote size={48} fill="currentColor" />
+              </div>
+
+              {/* Star Rating */}
+              <div className="flex gap-1 mb-6 text-[#F39220]">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={16} fill="currentColor" />
+                ))}
+              </div>
+
+              <p className="relative z-10 text-gray-700 leading-relaxed mb-8 italic">
                 “{item.message}”
               </p>
 
-              <div className="mt-6 flex items-center gap-4">
+              <div className="flex items-center gap-4 border-t border-gray-50 pt-6">
                 <div
-                  className="relative h-12 w-12 overflow-hidden rounded-full
-                  border-2 border-[#F39220]"
+                  className="relative h-14 w-14 overflow-hidden rounded-2xl
+                  border-2 border-white shadow-md transition-transform group-hover:scale-110"
                 >
                   <Image
                     src={item.avatar}
@@ -76,12 +90,12 @@ export default function TestimonialsSection() {
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-[#D51116]">
+                  <h4 className="font-bold text-gray-900 group-hover:text-[#D51116] transition-colors">
                     {item.name}
                   </h4>
-                  <span className="text-sm text-gray-600">
+                  <p className="text-xs font-medium text-[#F39220] uppercase tracking-wide">
                     {item.role}
-                  </span>
+                  </p>
                 </div>
               </div>
             </div>
