@@ -4,6 +4,9 @@ import { AuthProvider } from "@/context/AuthContext";
 export const metadata = {
   title: "Kaaftoon Solutions Technology",
   description: "SaaS built with Next.js",
+    icons: {
+    icon: "Images/Kaafton-07.png",
+  },
 };
 
 export default function RootLayout({
