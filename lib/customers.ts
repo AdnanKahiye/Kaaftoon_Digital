@@ -56,6 +56,7 @@ export const CustomerService = {
 
       // CREATE
   createSales(data: any) {
+    //alert(JSON.stringify(data));
     return api.post("/Customer/create-sales", data);
   },
 
@@ -201,6 +202,32 @@ getAUnpaidSales(
     params: filters,
   });
 },
+
+
+// --- CONTRACTS ---
+
+  // GET ALL CONTRACTS (with pagination and filtering)
+  getAllContracts(pageNumber = 1, pageSize = 10, phoneNumber = "") {
+    return api.get("/Customer/get-customer-contract", {
+      params: { 
+        pageNumber, 
+        pageSize, 
+        phoneNumber 
+      },
+    });
+  },
+
+
+  // ADD PROGRESS (Deduct quota from a contract item)
+addContractProgress(data: { saleItemId: string; quantity: number; remark: string }) {
+  alert(JSON.stringify(data));
+  return api.post("/Customer/add-progress", data);
+},
+
+getContractById: async (saleId: string) => {
+    // Replace '/api/Contract' with your actual controller route
+    return await api.get(`/Customer/contract-detail/${saleId}`);
+  },
 
 
 };

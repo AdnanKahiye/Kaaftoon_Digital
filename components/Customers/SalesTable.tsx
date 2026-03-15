@@ -12,6 +12,7 @@ interface SaleItem {
   price: number;
   quantity: number;
   total: number;
+  CompletedQuantity: number;
 }
 
 interface SaleDto {

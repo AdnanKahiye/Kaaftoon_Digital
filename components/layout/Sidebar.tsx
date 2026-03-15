@@ -60,6 +60,8 @@ const MENU_ITEMS = [
     children: [
       { title: "All Customers", href: "/dashboard/Customer" },
       { title: "Sales Customers", href: "/dashboard/Sales" },
+      { title: "Contract Management", href: "/dashboard/Contract" },
+
       { title: "Sales List", href: "/dashboard/Sale" },
     ],
   },
