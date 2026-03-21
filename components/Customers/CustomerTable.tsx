@@ -15,6 +15,8 @@ interface CustomerDto {
   address: string;
   type: string;
   gender: string;
+  serviceName?: string;
+  IsService?: boolean;
 }
 
 export default function CustomerTable() {

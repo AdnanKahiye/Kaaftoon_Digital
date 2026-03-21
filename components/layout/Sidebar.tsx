@@ -65,6 +65,26 @@ const MENU_ITEMS = [
       { title: "Sales List", href: "/dashboard/Sale" },
     ],
   },
+
+
+
+    {
+    key: "Tasks",
+    title: "Tasks",
+    icon: Package,
+    roles: ["Administrator", "Manager"] as Role[],
+    children: [
+      { title: "Category Tasks", href: "/dashboard/TaskCategory" },
+      { title: "Task Types", href: "/dashboard/Task-type" },
+      { title: "Create Task", href: "/dashboard/Task" },
+
+      { title: "Sales List", href: "/dashboard/Sale" },
+    ],
+  },
+
+
+
+
   {
     key: "billing",
     title: "Billing",

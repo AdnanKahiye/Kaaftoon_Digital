@@ -11,6 +11,8 @@ export interface CustomerFormData {
   address: string;
   gender: string;
   type: string;
+  serviceName?: string;
+  IsService?: boolean;
 }
 
 interface Props {
@@ -27,7 +29,9 @@ const emptyForm: CustomerFormData = {
   phoneNumber: "",
   address: "",
   gender: "",
-  type: "",
+  type: "Regular",
+  serviceName: "",
+  IsService: false,
 };
 
 export default function CustomerFormModal({
@@ -42,11 +46,21 @@ export default function CustomerFormModal({
     useState<Partial<Record<keyof CustomerFormData, string>>>({});
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setForm(mode === "edit" && initialData ? initialData : emptyForm);
+ useEffect(() => {
+  if (open) {
+    if (mode === "edit" && initialData) {
+      setForm({
+        ...initialData,
+        // Ensure optional fields are never undefined
+        serviceName: initialData.serviceName ?? "",
+        IsService: initialData.IsService ?? false,
+      });
+    } else {
+      setForm(emptyForm);
+    }
     setErrors({});
-  }, [mode, initialData, open]);
-
+  }
+}, [mode, initialData, open]);
   const update = (key: keyof CustomerFormData, value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
@@ -57,8 +71,9 @@ export default function CustomerFormModal({
     if (!form.email.trim()) e.email = "Email is required";
     if (!form.phoneNumber.trim()) e.phoneNumber = "Phone number is required";
     if (!form.address.trim()) e.address = "Address is required";
-    if (!form.type) e.type = "Type is required";
-
+  if (form.serviceName?.trim()) {
+    form.IsService = true;
+}
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -126,6 +141,15 @@ export default function CustomerFormModal({
             />
           </Field>
 
+
+                <Field label="Organization Name" error={errors.serviceName}>
+            <Input
+              value={form.serviceName}
+              onChange={(e) => update("serviceName", e.target.value)}
+              placeholder="Enter organization name"
+            />
+          </Field>
+
           <Field label="Gender">
             <select
               className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-gray-900 dark:text-white"
@@ -138,18 +162,7 @@ export default function CustomerFormModal({
             </select>
           </Field>
 
-          <Field label="Customer Type" required error={errors.type}>
-            <select
-              className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-gray-900 dark:text-white"
-              value={form.type}
-              onChange={(e) => update("type", e.target.value)}
-            >
-              <option value="">Select type</option>
-              <option value="Regular">Regular</option>
-              <option value="VIP">VIP</option>
-              <option value="Corporate">Corporate</option>
-            </select>
-          </Field>
+      
         </div>
 
         {/* Footer */}
