@@ -155,6 +155,7 @@ export default function TaskTable() {
               <tr className="bg-gray-50 text-gray-600 text-xs uppercase tracking-wider">
                 <th className="px-6 py-4 border-b font-semibold">Task</th>
                 <th className="px-6 py-4 border-b font-semibold">Assignee</th>
+                <th className="px-6 py-4 border-b font-semibold">Customer</th>
                 <th className="px-6 py-4 border-b font-semibold">Timeline</th>
                 <th className="px-6 py-4 border-b font-semibold">Priority</th>
                 <th className="px-6 py-4 border-b text-center font-semibold">Actions</th>
@@ -174,6 +175,8 @@ export default function TaskTable() {
                       <div className="text-xs text-gray-500">{task.categoryName}</div>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-700">{task.assignedUserName}</td>
+                    <td className="px-6 py-4 text-sm text-gray-700">{task.customerName}</td>
+
                     <td className="px-6 py-4 text-xs text-gray-500">
                       {new Date(task.startDate).toLocaleDateString()} - {new Date(task.endDate).toLocaleDateString()}
                     </td>
