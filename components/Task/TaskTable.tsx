@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Input from "@/components/form/input/InputField";
 import CreateTaskModal, { CreateTaskData } from "./CreateTaskModal"; 
 import ConfirmDeleteModal from "@/components/common/ConfirmDeleteModal";
@@ -8,8 +9,8 @@ import { TaskService } from "@/lib/tast";
 import toast from "react-hot-toast";
 
 interface TaskDto {
-   id?: string;
-// Made optional in case API doesn't return it
+  id?: string;
+  taskId?: string; 
   title: string;
   description: string;
   categoryId: string;
@@ -28,6 +29,7 @@ interface TaskDto {
 }
 
 export default function TaskTable() {
+  const router = useRouter();
   const [tasks, setTasks] = useState<TaskDto[]>([]);
   const [search, setSearch] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -55,42 +57,38 @@ export default function TaskTable() {
     }
   }
 
- async function handleSaveTask(formData: CreateTaskData) {
-  setProcessing(true);
-  try {
-    if (mode === "add") {
-      const res = await TaskService.createTask(formData);
-      if (res.data.success) {
-        toast.success("Created successfully");
-        setOpenModal(false);
-        loadTasks();
+  async function handleSaveTask(formData: CreateTaskData) {
+    setProcessing(true);
+    try {
+      if (mode === "add") {
+        const res = await TaskService.createTask(formData);
+        if (res.data.success) {
+          toast.success("Created successfully");
+          setOpenModal(false);
+          loadTasks();
+        }
+      } else {
+        const idToUpdate = selectedTask?.id || (selectedTask as any)?.taskId;
+        if (!idToUpdate) {
+          toast.error("Error: Missing Task ID");
+          return;
+        }
+        const res = await TaskService.updateTask(idToUpdate, formData);
+        if (res.data.success) {
+          toast.success("Updated successfully");
+          setOpenModal(false);
+          loadTasks();
+        }
       }
-    } else {
-      // 1. Try to find the ID from several possible property names
-      const idToUpdate = selectedTask?.id || (selectedTask as any)?.taskId;
-
-      if (!idToUpdate) {
-        console.error("Task data received from API:", selectedTask); // Check this in F12 console
-        toast.error("Cannot update: Task ID is missing from data");
-        return;
-      }
-
-      const res = await TaskService.updateTask(idToUpdate, formData);
-      if (res.data.success) {
-        toast.success("Updated successfully");
-        setOpenModal(false);
-        loadTasks();
-      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || "Error saving task");
+    } finally {
+      setProcessing(false);
     }
-  } catch (err: any) {
-    toast.error(err?.response?.data?.message || "Error saving task");
-  } finally {
-    setProcessing(false);
   }
-}
 
   async function handleDeleteConfirm() {
-    const idToDelete = selectedTask?.id || (selectedTask as any)?.typeId;
+    const idToDelete = selectedTask?.id || (selectedTask as any)?.taskId;
     if (!idToDelete) return;
     
     setProcessing(true);
@@ -107,6 +105,14 @@ export default function TaskTable() {
       setProcessing(false);
     }
   }
+
+  const getStatusStyle = (status: string) => {
+    const s = status?.toLowerCase();
+    if (s === 'completed') return 'bg-emerald-100 text-emerald-700 border-emerald-200';
+    if (s === 'in progress') return 'bg-amber-100 text-amber-700 border-amber-200';
+    if (s === 'pending') return 'bg-slate-100 text-slate-600 border-slate-200';
+    return 'bg-gray-100 text-gray-600 border-gray-200';
+  };
 
   const getPriorityColor = (priority: string) => {
     const p = priority?.toLowerCase();
@@ -148,7 +154,6 @@ export default function TaskTable() {
           />
         </div>
 
-        {/* Table Area */}
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -156,6 +161,7 @@ export default function TaskTable() {
                 <th className="px-6 py-4 border-b font-semibold">Task</th>
                 <th className="px-6 py-4 border-b font-semibold">Assignee</th>
                 <th className="px-6 py-4 border-b font-semibold">Customer</th>
+                <th className="px-6 py-4 border-b font-semibold">Status</th>
                 <th className="px-6 py-4 border-b font-semibold">Timeline</th>
                 <th className="px-6 py-4 border-b font-semibold">Priority</th>
                 <th className="px-6 py-4 border-b text-center font-semibold">Actions</th>
@@ -163,20 +169,21 @@ export default function TaskTable() {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {loading ? (
-                <tr><td colSpan={5} className="py-20 text-center text-gray-400">Loading...</td></tr>
-              ) : filtered.length === 0 ? (
-                <tr><td colSpan={5} className="py-20 text-center text-gray-400">No tasks found</td></tr>
+                <tr><td colSpan={7} className="py-20 text-center text-gray-400">Loading...</td></tr>
               ) : (
                 filtered.map((task, index) => (
-                  // Using index + task.title as a unique key since id might be missing
-                  <tr key={task.id || `${task.title}-${index}`} className="hover:bg-gray-50 transition">
+                  <tr key={task.id || index} className="hover:bg-gray-50 transition">
                     <td className="px-6 py-4">
                       <div className="font-medium text-gray-900">{task.title}</div>
-                      <div className="text-xs text-gray-500">{task.categoryName}</div>
+                      <div className="text-xs text-indigo-500 font-semibold">{task.categoryName}</div>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-700">{task.assignedUserName}</td>
                     <td className="px-6 py-4 text-sm text-gray-700">{task.customerName}</td>
-
+                    <td className="px-6 py-4">
+                      <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold border uppercase ${getStatusStyle(task.status)}`}>
+                        {task.status || 'Pending'}
+                      </span>
+                    </td>
                     <td className="px-6 py-4 text-xs text-gray-500">
                       {new Date(task.startDate).toLocaleDateString()} - {new Date(task.endDate).toLocaleDateString()}
                     </td>
@@ -186,7 +193,13 @@ export default function TaskTable() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <div className="flex justify-center gap-3">
+                      <div className="flex justify-center gap-4">
+                        <button 
+                          onClick={() => router.push(`/dashboard/Task/${task.id || (task as any).taskId}`)}
+                          className="text-gray-400 hover:text-indigo-600 font-medium text-sm transition-colors"
+                        >
+                          View
+                        </button>
                         <button 
                           onClick={() => { setMode("edit"); setSelectedTask(task); setOpenModal(true); }}
                           className="text-indigo-600 hover:text-indigo-900 font-medium text-sm"
@@ -209,11 +222,12 @@ export default function TaskTable() {
         </div>
       </div>
 
-      {/* Modal - Create/Edit */}
+      {/* Modals */}
       <CreateTaskModal
         open={openModal}
         mode={mode}
         initialData={selectedTask ? {
+            id: selectedTask.id || (selectedTask as any).taskId,
             title: selectedTask.title,
             description: selectedTask.description,
             categoryId: selectedTask.categoryId,
@@ -227,7 +241,6 @@ export default function TaskTable() {
         onSubmit={handleSaveTask}
       />
 
-      {/* Modal - Confirm Delete */}
       <ConfirmDeleteModal
         open={openDelete}
         loading={processing}

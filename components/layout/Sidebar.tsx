@@ -12,6 +12,10 @@ import {
   ChevronDown,
   Menu,
   X,
+  ClipboardList,
+  Users,
+  Wallet,
+  ArrowRightLeft
 } from "lucide-react";
 
 type Role = "Administrator" | "Manager" | "Employee" | "User";
@@ -19,8 +23,6 @@ type Role = "Administrator" | "Manager" | "Employee" | "User";
 interface SidebarProps {
   onCollapse?: (collapsed: boolean) => void;
 }
-
-/* ================= MENU CONFIG ================= */
 
 const MENU_ITEMS = [
   {
@@ -43,62 +45,40 @@ const MENU_ITEMS = [
     ],
   },
   {
-    key: "packages",
-    title: "Packages",
-    icon: Package,
-    roles: ["Administrator", "Manager"] as Role[],
-    children: [
-      { title: "All Packages", href: "/dashboard/packages" },
-      { title: "Package Requests", href: "/dashboard/packagesRequest" },
-    ],
-  },
-  {
     key: "Sales",
-    title: "Sales",
-    icon: Package,
+    title: "Sales & CRM",
+    icon: Users,
     roles: ["Administrator", "Manager"] as Role[],
     children: [
       { title: "All Customers", href: "/dashboard/Customer" },
-      { title: "Sales Customers", href: "/dashboard/Sales" },
-      { title: "Contract Management", href: "/dashboard/Contract" },
-
+      { title: "Sales Tracking", href: "/dashboard/Sales" },
+      { title: "Contracts", href: "/dashboard/Contract" },
       { title: "Sales List", href: "/dashboard/Sale" },
     ],
   },
-
-
-
-    {
+  {
     key: "Tasks",
-    title: "Tasks",
-    icon: Package,
+    title: "Project Tasks",
+    icon: ClipboardList,
     roles: ["Administrator", "Manager"] as Role[],
     children: [
-      { title: "Category Tasks", href: "/dashboard/TaskCategory" },
+      { title: "Task Categories", href: "/dashboard/TaskCategory" },
       { title: "Task Types", href: "/dashboard/Task-type" },
-      { title: "Create Task", href: "/dashboard/Task" },
-
-      { title: "Sales List", href: "/dashboard/Sale" },
+      { title: "Main Board", href: "/dashboard/Task" }
     ],
   },
-
-
-
-
   {
     key: "billing",
-    title: "Billing",
-    icon: CreditCard,
+    title: "Finance",
+    icon: Wallet,
     roles: ["Administrator", "Manager"] as Role[],
     children: [
       { title: "Payments", href: "/dashboard/unpaid" },
       { title: "Expenses", href: "/dashboard/Expenses" },
-      { title: "Expenses Summary", href: "/dashboard/Summary" },
+      { title: "Summary", href: "/dashboard/Summary" },
     ],
   },
 ];
-
-/* ================= SIDEBAR ================= */
 
 export default function Sidebar({ onCollapse }: SidebarProps) {
   const pathname = usePathname();
@@ -109,28 +89,18 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [open, setOpen] = useState<Record<string, boolean>>({});
 
-  /* ===== Auto open active section ===== */
-
   useEffect(() => {
     const activeSection = MENU_ITEMS.find((item) =>
       item.children?.some((child) => pathname.startsWith(child.href))
     );
-
     if (activeSection) {
-      setOpen((prev) => ({
-        ...prev,
-        [activeSection.key]: true,
-      }));
+      setOpen((prev) => ({ ...prev, [activeSection.key]: true }));
     }
   }, [pathname]);
-
-  /* ===== Filter by role ===== */
 
   const allowedMenus = MENU_ITEMS.filter((item) =>
     role ? item.roles.includes(role) : false
   );
-
-  /* ===== Collapse persistence ===== */
 
   useEffect(() => {
     const saved = localStorage.getItem("sidebarCollapsed");
@@ -143,11 +113,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
 
   const toggle = (key: string) => {
     if (isCollapsed) return;
-
-    setOpen((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+    setOpen((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   const toggleCollapse = () => {
@@ -157,90 +123,61 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
     onCollapse?.(newState);
   };
 
-  const isActive = (href: string) =>
-    pathname === href || pathname.startsWith(href + "/");
-
-  /* ================= RENDER ================= */
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
   return (
     <>
-      {/* MOBILE MENU BUTTON */}
       <button
         onClick={() => setIsMobileOpen(true)}
-        className="fixed top-4 left-4 z-50 md:hidden bg-gray-900 text-white p-2 rounded-lg"
+        className="fixed top-4 left-4 z-50 md:hidden bg-indigo-600 text-white p-2.5 rounded-xl shadow-lg"
       >
         <Menu size={20} />
       </button>
 
-      {/* OVERLAY */}
       {isMobileOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black/50 md:hidden"
-          onClick={() => setIsMobileOpen(false)}
-        />
+        <div className="fixed inset-0 z-30 bg-slate-950/60 backdrop-blur-sm md:hidden" onClick={() => setIsMobileOpen(false)} />
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex flex-col
-        bg-gradient-to-b from-gray-900 to-gray-950 border-r border-gray-800
-        transition-all duration-300
+        className={`fixed inset-y-0 left-0 z-40 flex flex-col bg-slate-950 border-r border-slate-800 transition-all duration-300 ease-in-out
         ${isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
-        ${isCollapsed ? "w-20" : "w-56"}`}
+        ${isCollapsed ? "w-[80px]" : "w-[260px]"}`}
       >
-        {/* HEADER */}
-        <div
-          className={`flex h-16 items-center border-b border-gray-800
-          ${isCollapsed ? "justify-center" : "justify-between px-4"}`}
-        >
+        {/* LOGO AREA */}
+        <div className={`flex h-20 items-center px-6 border-b border-slate-800/50 ${isCollapsed ? "justify-center" : "justify-between"}`}>
           {!isCollapsed ? (
-            <>
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-8 flex items-center justify-center bg-indigo-600 rounded-lg text-white font-bold">
-                  S
-                </div>
-                <span className="text-white font-semibold">System</span>
+            <div className="flex items-center gap-3">
+              <div className="h-9 w-9 flex items-center justify-center bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl shadow-indigo-500/20 shadow-lg text-white font-bold text-xl">
+                S
               </div>
-
-              <div className="flex items-center gap-2">
-                <button onClick={toggleCollapse}>
-                  <Menu size={18} className="text-gray-400" />
-                </button>
-
-                {/* CLOSE BUTTON MOBILE */}
-                <button
-                  className="md:hidden"
-                  onClick={() => setIsMobileOpen(false)}
-                >
-                  <X size={18} className="text-gray-400" />
-                </button>
-              </div>
-            </>
+              <span className="text-slate-100 font-bold tracking-tight text-lg">CORE SYSTEM</span>
+            </div>
           ) : (
-            <button onClick={toggleCollapse}>
-              <Menu size={18} className="text-gray-400" />
-            </button>
+            <div className="h-10 w-10 flex items-center justify-center bg-indigo-600 rounded-xl text-white font-bold">S</div>
           )}
         </div>
 
-        {/* NAVIGATION */}
-        <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-2">
+        {/* NAV LIST */}
+        <nav className="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-1.5">
           {allowedMenus.map((item) => {
             const Icon = item.icon;
+            const isParentActive = item.children?.some(child => isActive(child.href));
 
             if (!item.children) {
               return (
                 <Link
                   key={item.key}
                   href={item.href!}
-                  className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition
-                  ${
-                    isActive(item.href!)
-                      ? "bg-indigo-600 text-white"
-                      : "text-gray-400 hover:bg-gray-800 hover:text-white"
-                  }`}
+                  className={`group relative flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all
+                  ${isActive(item.href!) 
+                    ? "bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 shadow-sm" 
+                    : "text-slate-400 hover:bg-slate-900 hover:text-slate-100 border border-transparent"}`}
                 >
-                  <Icon size={18} />
+                  <Icon size={20} className={isActive(item.href!) ? "text-indigo-400" : "group-hover:text-slate-100"} />
                   {!isCollapsed && <span>{item.title}</span>}
+                  {isActive(item.href!) && !isCollapsed && (
+                    <div className="absolute left-0 w-1 h-5 bg-indigo-500 rounded-r-full" />
+                  )}
                 </Link>
               );
             }
@@ -249,51 +186,51 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
               <div key={item.key} className="space-y-1">
                 <button
                   onClick={() => toggle(item.key)}
-                  className="flex w-full items-center justify-between rounded-lg px-4 py-2.5 text-sm text-gray-400 hover:bg-gray-800 hover:text-white"
+                  className={`group flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all
+                  ${isParentActive && !open[item.key] ? "text-indigo-400 bg-indigo-600/5" : "text-slate-400 hover:bg-slate-900 hover:text-slate-100"}`}
                 >
                   <div className="flex items-center gap-3">
-                    <Icon size={18} />
+                    <Icon size={20} className={isParentActive ? "text-indigo-400" : "group-hover:text-slate-100"} />
                     {!isCollapsed && <span>{item.title}</span>}
                   </div>
-
                   {!isCollapsed && (
-                    <ChevronDown
-                      size={16}
-                      className={`transition-transform duration-300
-                      ${open[item.key] ? "rotate-0" : "-rotate-90"}`}
-                    />
+                    <ChevronDown size={16} className={`transition-transform duration-300 ${open[item.key] ? "rotate-180" : "rotate-0"}`} />
                   )}
                 </button>
 
-                <div
-                  className={`overflow-hidden transition-all duration-300
-                  ${
-                    open[item.key] && !isCollapsed
-                      ? "max-h-96 opacity-100"
-                      : "max-h-0 opacity-0"
-                  }`}
-                >
-                  <div className="ml-4 space-y-1 py-1">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        className={`block rounded-lg px-4 py-2 text-sm
-                        ${
-                          isActive(child.href)
-                            ? "text-white"
-                            : "text-gray-400 hover:bg-gray-800 hover:text-white"
-                        }`}
-                      >
-                        {!isCollapsed && child.title}
-                      </Link>
-                    ))}
+                {!isCollapsed && (
+                  <div className={`overflow-hidden transition-all duration-300 ease-in-out ${open[item.key] ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"}`}>
+                    <div className="ml-9 mt-1 space-y-1 border-l border-slate-800">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className={`relative block py-2 pl-6 pr-4 text-xs font-medium transition-colors
+                          ${isActive(child.href) 
+                            ? "text-indigo-400 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1.5 before:h-1.5 before:bg-indigo-500 before:rounded-full" 
+                            : "text-slate-500 hover:text-slate-200"}`}
+                        >
+                          {child.title}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             );
           })}
         </nav>
+
+        {/* FOOTER - COLLAPSE TOGGLE */}
+        <div className="p-4 border-t border-slate-800/50">
+          <button
+            onClick={toggleCollapse}
+            className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-100 transition-all"
+          >
+            <ArrowRightLeft size={18} className={`transition-transform duration-500 ${isCollapsed ? "rotate-180" : "rotate-0"}`} />
+            {!isCollapsed && <span>Collapse Sidebar</span>}
+          </button>
+        </div>
       </aside>
     </>
   );

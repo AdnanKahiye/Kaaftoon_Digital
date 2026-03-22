@@ -104,4 +104,9 @@ updateTask(id: string, data: CreateTaskData) {
     return api.delete(`/Task/delete-task-item/${id}`);
   },
 
+
+  getTaskById(id: string) {
+    return api.get(`/Task/get-task-detail/${id}`);
+  },
+
 };

@@ -23,7 +23,7 @@ export default function DashboardLayout({
     }
   }, [loading, user, router]);
 
-  // Sidebar state
+  // Sync state with localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem("sidebarCollapsed");
     if (saved) {
@@ -31,13 +31,13 @@ export default function DashboardLayout({
     }
   }, []);
 
-  // ⛔ Prevent flash AFTER hooks
   if (loading || !user) {
     return null;
   }
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* 1. SIDEBAR: Fixed position */}
       <Sidebar
         onCollapse={(collapsed) => {
           setIsSidebarCollapsed(collapsed);
@@ -45,15 +45,22 @@ export default function DashboardLayout({
         }}
       />
 
+      {/* 2. MAIN CONTENT WRAPPER */}
+      {/* We use padding-left instead of margin-left to ensure the Navbar 
+          background (which is width: 100%) stays attached to the sidebar boundary */}
       <div
-        className={`transition-all duration-300 flex-1 ${
-          isSidebarCollapsed ? "md:ml-20" : "md:ml-56"
+        className={`flex-1 flex flex-col transition-all duration-300 ${
+          isSidebarCollapsed ? "md:pl-20" : "md:pl-[260px]" 
         }`}
       >
+        {/* 3. NAVBAR: Now width: 100% inside the flex-1 container */}
         <Navbar />
 
-        <main className="min-h-[calc(100vh-64px)] p-6">
-          <div className="mx-auto max-w-7xl">{children}</div>
+        {/* 4. PAGE CONTENT */}
+        <main className="flex-1 p-4 md:p-8">
+          <div className="mx-auto max-w-[1600px]">
+            {children}
+          </div>
         </main>
       </div>
 
