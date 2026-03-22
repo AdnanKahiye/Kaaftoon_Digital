@@ -64,7 +64,9 @@ const MENU_ITEMS = [
     children: [
       { title: "Task Categories", href: "/dashboard/TaskCategory" },
       { title: "Task Types", href: "/dashboard/Task-type" },
-      { title: "Main Board", href: "/dashboard/Task" }
+      { title: "Main Board", href: "/dashboard/Task" },
+       { title: "My Tasks", href: "/dashboard/my-tasks" }
+
     ],
   },
   {

@@ -25,6 +25,10 @@ export interface CreateTaskData {
   priority: string;
 }
 
+export interface UpdateTaskStatusRequest {
+  status: string;
+}
+
 
 export const TaskService = {
   // Get all categories
@@ -108,5 +112,25 @@ updateTask(id: string, data: CreateTaskData) {
   getTaskById(id: string) {
     return api.get(`/Task/get-task-detail/${id}`);
   },
+
+
+
+getMyTasks() {
+    // This alert will trigger ONLY if the function is actually called
+    return api.get(`/Task/get-my-task`);
+  },
+
+updateTaskStatus(id: string, data: UpdateTaskStatusRequest) {
+    // Debug alert to confirm the ID and status are correct before sending    
+    // We send data.status directly as the body, not the whole 'data' object
+    // This matches: public async Task<IActionResult> UpdateTaskStatus(Guid id, [FromBody] string status)
+    return api.put(`/Task/${id}/status`, JSON.stringify(data.status), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  },
+
+
 
 };
