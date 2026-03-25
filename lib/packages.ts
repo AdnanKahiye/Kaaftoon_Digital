@@ -58,7 +58,6 @@ export const packageService = {
 
    createequestPackage(data: PackageRequestDto) {
     
-    alert(JSON.stringify(data));
     return api.post("/Package/create-packages-request", data);
   },
 

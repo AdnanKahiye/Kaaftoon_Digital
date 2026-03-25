@@ -48,7 +48,7 @@ const MENU_ITEMS = [
     key: "Sales",
     title: "Sales & CRM",
     icon: Users,
-    roles: ["Administrator", "Admin"] as Role[],
+    roles: ["Administrator", "Admin" ,"User"] as Role[],
     children: [
       { title: "All Customers", href: "/dashboard/Customer", roles: ["Administrator", "Admin" ,"User"] },
       { title: "Sales Tracking", href: "/dashboard/Sales", roles: ["Administrator", "Admin", "User"] },
@@ -60,7 +60,7 @@ const MENU_ITEMS = [
     key: "Tasks",
     title: "Project Tasks",
     icon: ClipboardList,
-    roles: ["Administrator", "Admin"] as Role[],
+    roles: ["Administrator", "Admin" ,"User"] as Role[],
     children: [
       { title: "Task Categories", href: "/dashboard/TaskCategory", roles: ["Administrator", "Admin"] },
       { title: "Task Types", href: "/dashboard/Task-type", roles: ["Administrator", "Admin"] },
@@ -74,7 +74,7 @@ const MENU_ITEMS = [
     key: "billing",
     title: "Finance",
     icon: Wallet,
-    roles: ["Administrator", "Admin"] as Role[],
+    roles: ["Administrator", "Admin" ,"User"] as Role[],
     children: [
       { title: "Payments", href: "/dashboard/unpaid", roles: ["Administrator", "Admin", "User"] },
       { title: "Expenses", href: "/dashboard/Expenses", roles: ["Administrator", "Admin"] },

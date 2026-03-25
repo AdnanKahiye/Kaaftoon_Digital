@@ -220,7 +220,6 @@ getAUnpaidSales(
 
   // ADD PROGRESS (Deduct quota from a contract item)
 addContractProgress(data: { saleItemId: string; quantity: number; remark: string }) {
-  alert(JSON.stringify(data));
   return api.post("/Customer/add-progress", data);
 },
 
