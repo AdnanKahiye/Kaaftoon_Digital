@@ -10,9 +10,7 @@ export const UsersService = {
     return api.get(`/User/${id}`);
   },
 
-  create(data: any) {
-    alert("Creating user with data: " + JSON.stringify(data));
-    
+  create(data: any) {    
     console.log("Creating user with data:", data);
     return api.post("/User/create", data);
   },

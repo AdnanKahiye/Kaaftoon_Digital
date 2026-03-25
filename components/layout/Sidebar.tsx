@@ -18,7 +18,7 @@ import {
   ArrowRightLeft
 } from "lucide-react";
 
-type Role = "Administrator" | "Manager" | "Employee" | "User";
+type Role = "Administrator" | "Admin" | "Employee" | "User";
 
 interface SidebarProps {
   onCollapse?: (collapsed: boolean) => void;
@@ -30,54 +30,55 @@ const MENU_ITEMS = [
     title: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
-    roles: ["Administrator", "Manager", "Employee", "User"] as Role[],
+    roles: ["Administrator", "Admin", "Employee", "User"] as Role[],
   },
   {
     key: "Registration",
     title: "Registration",
     icon: Settings,
-    roles: ["Administrator", "Manager"] as Role[],
+    roles: ["Administrator", "Admin"] as Role[],
     children: [
-      { title: "Users", href: "/dashboard/users" },
-      { title: "Category Service", href: "/dashboard/Services" },
-      { title: "Services", href: "/dashboard/Item" },
-      { title: "Expenses Category", href: "/dashboard/Category" },
+      { title: "Users", href: "/dashboard/users", roles: ["Administrator", "Admin"] },
+      { title: "Category Service", href: "/dashboard/Services", roles: ["Administrator", "Admin"] },
+      { title: "Services", href: "/dashboard/Item", roles: ["Administrator", "Admin"] },
+      { title: "Expenses Category", href: "/dashboard/Category", roles: ["Administrator", "Admin"] },
     ],
   },
   {
     key: "Sales",
     title: "Sales & CRM",
     icon: Users,
-    roles: ["Administrator", "Manager"] as Role[],
+    roles: ["Administrator", "Admin"] as Role[],
     children: [
-      { title: "All Customers", href: "/dashboard/Customer" },
-      { title: "Sales Tracking", href: "/dashboard/Sales" },
-      { title: "Contracts", href: "/dashboard/Contract" },
-      { title: "Sales List", href: "/dashboard/Sale" },
+      { title: "All Customers", href: "/dashboard/Customer", roles: ["Administrator", "Admin" ,"User"] },
+      { title: "Sales Tracking", href: "/dashboard/Sales", roles: ["Administrator", "Admin", "User"] },
+      { title: "Contracts", href: "/dashboard/Contract", roles: ["Administrator", "Admin", "User"] },
+      { title: "Sales List", href: "/dashboard/Sale", roles: ["Administrator", "Admin", "User"] },
     ],
   },
   {
     key: "Tasks",
     title: "Project Tasks",
     icon: ClipboardList,
-    roles: ["Administrator", "Manager"] as Role[],
+    roles: ["Administrator", "Admin"] as Role[],
     children: [
-      { title: "Task Categories", href: "/dashboard/TaskCategory" },
-      { title: "Task Types", href: "/dashboard/Task-type" },
-      { title: "Main Board", href: "/dashboard/Task" },
-       { title: "My Tasks", href: "/dashboard/my-tasks" }
+      { title: "Task Categories", href: "/dashboard/TaskCategory", roles: ["Administrator", "Admin"] },
+      { title: "Task Types", href: "/dashboard/Task-type", roles: ["Administrator", "Admin"] },
 
+      // ✅ TABS WITH PERMISSION
+      { title: "Main Board", href: "/dashboard/Task", roles: ["Administrator", "Admin", "Employee"] },
+      { title: "My Tasks", href: "/dashboard/my-tasks", roles: ["Administrator", "Admin", "Employee", "User"] }
     ],
   },
   {
     key: "billing",
     title: "Finance",
     icon: Wallet,
-    roles: ["Administrator", "Manager"] as Role[],
+    roles: ["Administrator", "Admin"] as Role[],
     children: [
-      { title: "Payments", href: "/dashboard/unpaid" },
-      { title: "Expenses", href: "/dashboard/Expenses" },
-      { title: "Summary", href: "/dashboard/Summary" },
+      { title: "Payments", href: "/dashboard/unpaid", roles: ["Administrator", "Admin", "User"] },
+      { title: "Expenses", href: "/dashboard/Expenses", roles: ["Administrator", "Admin"] },
+      { title: "Summary", href: "/dashboard/Summary", roles: ["Administrator", "Admin"] },
     ],
   },
 ];

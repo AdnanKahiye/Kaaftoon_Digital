@@ -12,7 +12,6 @@ export const UtilityService = {
 
       createContactRequest(data: ContacRequestDto) {
     
-    alert(JSON.stringify(data));
     return api.post("/Email/create-contact", data);
   },
  
