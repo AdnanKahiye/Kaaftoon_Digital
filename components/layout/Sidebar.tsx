@@ -6,12 +6,9 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import {
   LayoutDashboard,
-  CreditCard,
   Settings,
-  Package,
   ChevronDown,
   Menu,
-  X,
   ClipboardList,
   Users,
   Wallet,
@@ -48,9 +45,9 @@ const MENU_ITEMS = [
     key: "Sales",
     title: "Sales & CRM",
     icon: Users,
-    roles: ["Administrator", "Admin" ,"User"] as Role[],
+    roles: ["Administrator", "Admin", "User"] as Role[],
     children: [
-      { title: "All Customers", href: "/dashboard/Customer", roles: ["Administrator", "Admin" ,"User"] },
+      { title: "All Customers", href: "/dashboard/Customer", roles: ["Administrator", "Admin", "User"] },
       { title: "Sales Tracking", href: "/dashboard/Sales", roles: ["Administrator", "Admin", "User"] },
       { title: "Contracts", href: "/dashboard/Contract", roles: ["Administrator", "Admin", "User"] },
       { title: "Sales List", href: "/dashboard/Sale", roles: ["Administrator", "Admin", "User"] },
@@ -60,12 +57,10 @@ const MENU_ITEMS = [
     key: "Tasks",
     title: "Project Tasks",
     icon: ClipboardList,
-    roles: ["Administrator", "Admin" ,"User"] as Role[],
+    roles: ["Administrator", "Admin", "User", "Employee"] as Role[],
     children: [
       { title: "Task Categories", href: "/dashboard/TaskCategory", roles: ["Administrator", "Admin"] },
       { title: "Task Types", href: "/dashboard/Task-type", roles: ["Administrator", "Admin"] },
-
-      // ✅ TABS WITH PERMISSION
       { title: "Main Board", href: "/dashboard/Task", roles: ["Administrator", "Admin", "Employee"] },
       { title: "My Tasks", href: "/dashboard/my-tasks", roles: ["Administrator", "Admin", "Employee", "User"] }
     ],
@@ -74,7 +69,7 @@ const MENU_ITEMS = [
     key: "billing",
     title: "Finance",
     icon: Wallet,
-    roles: ["Administrator", "Admin" ,"User"] as Role[],
+    roles: ["Administrator", "Admin", "User"] as Role[],
     children: [
       { title: "Payments", href: "/dashboard/unpaid", roles: ["Administrator", "Admin", "User"] },
       { title: "Expenses", href: "/dashboard/Expenses", roles: ["Administrator", "Admin"] },
@@ -92,6 +87,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [open, setOpen] = useState<Record<string, boolean>>({});
 
+  // Automatically open the parent menu if a child is active
   useEffect(() => {
     const activeSection = MENU_ITEMS.find((item) =>
       item.children?.some((child) => pathname.startsWith(child.href))
@@ -101,10 +97,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
     }
   }, [pathname]);
 
-  const allowedMenus = MENU_ITEMS.filter((item) =>
-    role ? item.roles.includes(role) : false
-  );
-
+  // Load sidebar state from local storage
   useEffect(() => {
     const saved = localStorage.getItem("sidebarCollapsed");
     if (saved) {
@@ -113,6 +106,19 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
       onCollapse?.(collapsed);
     }
   }, [onCollapse]);
+
+  // Logic: Filter top-level menus and ensure children are restricted
+  const allowedMenus = MENU_ITEMS.filter((item) => {
+    const hasParentRole = role ? item.roles.includes(role) : false;
+    
+    // If the item has children, only show parent if at least one child is allowed for this role
+    if (item.children) {
+      const allowedChildren = item.children.filter(child => role && child.roles.includes(role as Role));
+      return hasParentRole && allowedChildren.length > 0;
+    }
+    
+    return hasParentRole;
+  });
 
   const toggle = (key: string) => {
     if (isCollapsed) return;
@@ -130,6 +136,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
 
   return (
     <>
+      {/* Mobile Toggle Button */}
       <button
         onClick={() => setIsMobileOpen(true)}
         className="fixed top-4 left-4 z-50 md:hidden bg-indigo-600 text-white p-2.5 rounded-xl shadow-lg"
@@ -137,8 +144,12 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
         <Menu size={20} />
       </button>
 
+      {/* Mobile Overlay */}
       {isMobileOpen && (
-        <div className="fixed inset-0 z-30 bg-slate-950/60 backdrop-blur-sm md:hidden" onClick={() => setIsMobileOpen(false)} />
+        <div 
+          className="fixed inset-0 z-30 bg-slate-950/60 backdrop-blur-sm md:hidden" 
+          onClick={() => setIsMobileOpen(false)} 
+        />
       )}
 
       <aside
@@ -166,6 +177,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
             const Icon = item.icon;
             const isParentActive = item.children?.some(child => isActive(child.href));
 
+            // Case 1: Simple Link (No Children)
             if (!item.children) {
               return (
                 <Link
@@ -185,6 +197,7 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
               );
             }
 
+            // Case 2: Nested Menu
             return (
               <div key={item.key} className="space-y-1">
                 <button
@@ -204,18 +217,20 @@ export default function Sidebar({ onCollapse }: SidebarProps) {
                 {!isCollapsed && (
                   <div className={`overflow-hidden transition-all duration-300 ease-in-out ${open[item.key] ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"}`}>
                     <div className="ml-9 mt-1 space-y-1 border-l border-slate-800">
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          className={`relative block py-2 pl-6 pr-4 text-xs font-medium transition-colors
-                          ${isActive(child.href) 
-                            ? "text-indigo-400 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1.5 before:h-1.5 before:bg-indigo-500 before:rounded-full" 
-                            : "text-slate-500 hover:text-slate-200"}`}
-                        >
-                          {child.title}
-                        </Link>
-                      ))}
+                      {item.children
+                        .filter((child) => role ? child.roles.includes(role) : false) // Filter sub-tabs based on role
+                        .map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            className={`relative block py-2 pl-6 pr-4 text-xs font-medium transition-colors
+                            ${isActive(child.href) 
+                              ? "text-indigo-400 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1.5 before:h-1.5 before:bg-indigo-500 before:rounded-full" 
+                              : "text-slate-500 hover:text-slate-200"}`}
+                          >
+                            {child.title}
+                          </Link>
+                        ))}
                     </div>
                   </div>
                 )}
