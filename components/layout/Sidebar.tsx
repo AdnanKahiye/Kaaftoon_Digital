@@ -12,7 +12,8 @@ import {
   ClipboardList,
   Users,
   Wallet,
-  ArrowRightLeft
+  ArrowRightLeft,
+  HandCoins
 } from "lucide-react";
 
 type Role = "Administrator" | "Admin" | "Employee" | "User";
@@ -63,6 +64,19 @@ const MENU_ITEMS = [
       { title: "Task Types", href: "/dashboard/Task-type", roles: ["Administrator", "Admin"] },
       { title: "Main Board", href: "/dashboard/Task", roles: ["Administrator", "Admin", "Employee"] },
       { title: "My Tasks", href: "/dashboard/my-tasks", roles: ["Administrator", "Admin", "Employee", "User"] }
+    ],
+  },
+
+
+  {
+    key: "Suppliers",
+    title: "Suppliers",
+    icon: HandCoins,
+    roles: ["Administrator", "Admin", "Employee"] as Role[],
+    children: [
+      { title: "Supplier", href: "/dashboard/Supplier", roles: ["Administrator", "Admin"] },
+      { title: "Purchases", href: "/dashboard/Purchase", roles: ["Administrator", "Admin"] },
+      { title: "Payments", href: "/dashboard/payment", roles: ["Administrator", "Admin", "Employee"] },
     ],
   },
   {
