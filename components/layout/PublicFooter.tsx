@@ -73,7 +73,7 @@ export default function PublicFooter() {
                 </div>
                 <div>
                   <p className="text-[10px] font-black uppercase text-gray-500 tracking-widest">Email</p>
-                  <p className="text-sm font-bold text-white">info@kaftondigital.com</p>
+                  <p className="text-sm font-bold text-white">info@kaaftontech.com</p>
                 </div>
               </li>
               <li className="flex items-start gap-4 group">

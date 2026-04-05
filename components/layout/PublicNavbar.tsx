@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useRef } from "react";
-import { Phone, Mail, Facebook, Twitter, Linkedin, X, ChevronDown } from "lucide-react";
+import { Phone, Mail, Facebook, Twitter, Linkedin, X, ChevronDown  ,Music} from "lucide-react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 
@@ -38,9 +38,9 @@ export default function PublicNavbar() {
       <div className="fixed top-0 left-0 right-0 z-50 bg-[#D51116] text-white text-sm">
         <div className="mx-auto max-w-7xl px-6 py-2 grid grid-cols-3 items-center">
           <div className="hidden md:flex items-center gap-6">
-            <a href="mailto:info@kaftondigital.com" className="flex items-center gap-2 hover:text-[#FFECCD] transition">
+            <a href="mailto:info@kaaftontech.com" className="flex items-center gap-2 hover:text-[#FFECCD] transition">
               <Mail className="h-4 w-4 text-[#FFECCD]" />
-              info@kaftondigital.com
+              info@kaaftontech.com
             </a>
             <a href="tel:+252612024843" className="flex items-center gap-2 hover:text-[#FFECCD] transition">
               <Phone className="h-4 w-4 text-[#FFECCD]" />
@@ -56,9 +56,9 @@ export default function PublicNavbar() {
           </div>
 
           <div className="flex justify-end items-center gap-4">
-            <a href="#" className="hover:text-[#FFECCD] transition"><Facebook className="h-4 w-4" /></a>
-            <a href="#" className="hover:text-[#FFECCD] transition"><Twitter className="h-4 w-4" /></a>
-            <a href="#" className="hover:text-[#FFECCD] transition"><Linkedin className="h-4 w-4" /></a>
+            <a href="https://www.facebook.com/share/18fXQ9t7sw/" className="hover:text-[#FFECCD] transition"><Facebook className="h-4 w-4" /></a>
+            <a href="https://www.tiktok.com/@kaaftontech01?_r=1&_t=ZS-95HPAUFUERI" className="hover:text-[#FFECCD] transition"><Twitter className="h-4 w-4" /></a>
+            <a href="https://www.tiktok.com/@kaaftontech01?_r=1&_t=ZS-95HPAUFUERIh" className="hover:text-[#FFECCD] transition"><Music className="h-4 w-4" /></a>
           </div>
         </div>
       </div>

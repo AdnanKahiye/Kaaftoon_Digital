@@ -43,6 +43,17 @@ const MENU_ITEMS = [
     ],
   },
   {
+    key: "Packages",
+    title: "Packages & Billing",
+    icon: Wallet,
+    roles: ["Administrator", "Admin", "User"] as Role[],
+    children: [
+      { title: "packages", href: "/dashboard/packages", roles: ["Administrator", "Admin", "User"] },
+      { title: "Package Requests", href: "/dashboard/packagesRequest", roles: ["Administrator", "Admin"] },
+    ],
+  },
+  
+  {
     key: "Sales",
     title: "Sales & CRM",
     icon: Users,
